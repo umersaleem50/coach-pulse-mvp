@@ -1,14 +1,6 @@
 import { Button } from "@/shared/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/shared/components/ui/dialog";
+
+import { Origami, Plus } from "lucide-react";
 import {
   Empty,
   EmptyContent,
@@ -17,18 +9,9 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/shared/components/ui/empty";
-import { Origami, Plus } from "lucide-react";
-import { FormCreateProject } from "./FormCreateProject";
-import { FileProvider } from "@/store/FileContext";
-import { useState } from "react";
+import NewProjectDialog from "./NewProjectDialog";
 
 function NewProjectCard() {
-  const [openDialog, setOpenDialog] = useState(false);
-
-  function handleCloseDialog() {
-    setOpenDialog((open) => !open);
-  }
-
   return (
     <Empty className="border border-dashed">
       <EmptyHeader>
@@ -42,27 +25,12 @@ function NewProjectCard() {
           Create a new project for your organization.
         </EmptyDescription>
 
-        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus />
-              Create Project
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Project</DialogTitle>
-              <DialogDescription>
-                Please provide details to create new project.
-              </DialogDescription>
-            </DialogHeader>
-            <FileProvider>
-              <FormCreateProject
-                onSuccess={handleCloseDialog}
-              ></FormCreateProject>
-            </FileProvider>
-          </DialogContent>
-        </Dialog>
+        <NewProjectDialog>
+          <Button>
+            <Plus />
+            Create Project +
+          </Button>
+        </NewProjectDialog>
       </EmptyContent>
     </Empty>
   );

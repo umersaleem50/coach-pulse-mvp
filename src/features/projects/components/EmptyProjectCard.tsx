@@ -7,11 +7,8 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/shared/components/ui/empty";
-import { Origami } from "lucide-react";
-
-function handleCreateProject() {
-  // NOTHING TO EXECUTE HERE. IDIOT!!!
-}
+import { Origami, Plus } from "lucide-react";
+import NewProjectDialog from "./NewProjectDialog";
 
 function EmptyProjectCard() {
   return (
@@ -26,7 +23,13 @@ function EmptyProjectCard() {
         <EmptyDescription>
           Create a new project for your organization.
         </EmptyDescription>
-        <Button onClick={handleCreateProject}>Create Project</Button>
+
+        <NewProjectDialog>
+          <Button>
+            <Plus />
+            Create Project
+          </Button>
+        </NewProjectDialog>
       </EmptyContent>
     </Empty>
   );
