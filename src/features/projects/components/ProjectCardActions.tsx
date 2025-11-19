@@ -11,22 +11,24 @@ import {
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { BotOff, Pen, Trash, Users, UserStar } from "lucide-react";
 import useDeleteProject from "../hooks/useDeleteProject";
+import type z from "zod";
+import type { projectFormSchema } from "./FormCreateProject";
+import EditProjectCard from "./EditProject";
+import { generateLogoURL } from "@/shared/lib/helpers";
 
 function ProjectCardActions({
   children,
-  projectName,
-  projectLogo,
-  projectId,
+  project,
 }: {
   children: React.ReactNode;
-  projectName: string;
-  projectLogo: string;
-  projectId: string | bigint | number;
+  project: z.infer<typeof projectFormSchema>;
 }) {
   const { deleteProject, isDeleting } = useDeleteProject();
 
+  const logoURL = generateLogoURL(project.logo);
+
   function handleDeleteProject() {
-    deleteProject({ id: projectId as string });
+    deleteProject({ id: project.id as string });
   }
 
   return (
@@ -35,9 +37,9 @@ function ProjectCardActions({
       <DropdownMenuContent>
         <DropdownMenuLabel className="flex items-center gap-x-2">
           <Avatar className="size-6">
-            <AvatarImage src={projectLogo || "/no-image.jpg"} />
+            <AvatarImage src={logoURL || "/no-image.jpg"} />
           </Avatar>
-          {projectName}
+          {project.name}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
@@ -51,16 +53,18 @@ function ProjectCardActions({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem>
-            <Pen /> Edit Project
-          </DropdownMenuItem>
+          <EditProjectCard data={project}>
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              <Pen /> Edit Project
+            </DropdownMenuItem>
+          </EditProjectCard>
 
           <DropdownMenuItem>
             <BotOff /> Disable Project
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <AlertDialog
-            name={projectName}
+            name={project.name}
             project={"project"}
             onConfirm={handleDeleteProject}
             isLoading={isDeleting}

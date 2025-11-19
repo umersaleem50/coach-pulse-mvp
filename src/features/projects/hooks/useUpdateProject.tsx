@@ -1,19 +1,22 @@
 import { updateProjectApi } from "@/services/projects-api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export default function useUpdateProject() {
-  function handleOnSuccess(data) {
-    return toast.success(`Project:${data.name} updated successfully!`);
+export default function useEditProject(id: string | number | undefined) {
+  const queryClient = useQueryClient();
+  function handleOnSuccess() {
+    toast.success(`Project:${id} updated successfully!`);
+    queryClient.invalidateQueries({ queryKey: ["projects"] });
   }
 
-  function handleOnError(err: Error) {
-    return toast.error(err.name, { description: err.message });
+  function handleOnError(error: Error) {
+    toast.error(error.message);
   }
 
-  const { mutate, isPending: isUpdatingProject } = useMutation({
-    mutationFn: updateProjectApi,
+  const { mutate: updateProject, isPending: isUpdatingProject } = useMutation({
+    mutationFn: (payload) => updateProjectApi({ id, payload }),
     onSuccess: handleOnSuccess,
     onError: handleOnError,
   });
+  return { updateProject, isUpdatingProject };
 }
