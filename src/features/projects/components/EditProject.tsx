@@ -1,4 +1,3 @@
-import type { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +7,17 @@ import {
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
 import { FileProvider } from "@/store/FileContext";
+import React, { useState } from "react";
+import { FormCreateProject, projectFormSchema } from "./FormCreateProject";
+import type z from "zod";
 
-import { FormCreateProject } from "./FormCreateProject";
-import { useState } from "react";
-
-function NewProjectDialog({ children }: { children: React.ReactNode }) {
+function EditProjectCard({
+  data,
+  children,
+}: {
+  data: z.infer<typeof projectFormSchema>;
+  children: React.ReactNode;
+}) {
   const [openDialog, setOpenDialog] = useState(false);
 
   function handleCloseDialog() {
@@ -29,11 +34,14 @@ function NewProjectDialog({ children }: { children: React.ReactNode }) {
           </DialogDescription>
         </DialogHeader>
         <FileProvider>
-          <FormCreateProject onSuccess={handleCloseDialog}></FormCreateProject>
+          <FormCreateProject
+            data={data}
+            onSuccess={handleCloseDialog}
+          ></FormCreateProject>
         </FileProvider>
       </DialogContent>
     </Dialog>
   );
 }
 
-export default NewProjectDialog;
+export default EditProjectCard;

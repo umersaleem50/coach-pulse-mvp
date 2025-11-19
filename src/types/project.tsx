@@ -9,4 +9,5 @@ export interface Project {
   staff: UserProfile[];
   created_at: Date;
   status: "active" | "in-active";
+  location: [number, number];
 }

@@ -42,6 +42,7 @@ function ProjectCard({
   owners,
   status,
   staff,
+  location,
 }: Project) {
   const logoURL = generateLogoURL(logo);
 
@@ -68,11 +69,7 @@ function ProjectCard({
               </div>
             </div>
           </div>
-          <ProjectCardActions
-            projectName={name}
-            projectLogo={logoURL}
-            projectId={id}
-          >
+          <ProjectCardActions project={{ name, logo, id, location, status }}>
             <Button variant={"ghost"} size={"icon"}>
               <Ellipsis />
             </Button>
