@@ -1,13 +1,14 @@
+import { Plus } from "lucide-react";
+import type { Project } from "@/types/project";
 import EmptyProjectCard from "@/features/projects/components/EmptyProjectCard";
 import LoadingProjects from "@/features/projects/components/LoadingProjects";
 import ProjectCard from "@/features/projects/components/ProjectCard";
 import { useProjects } from "@/features/projects/hooks/useProjects";
-import { Page } from "@/shared/components/page";
 import ErrorCard from "@/shared/components/ErrorCard";
-import type { Project } from "@/types/project";
 import NewProjectCard from "@/features/projects/components/NewProjectCard";
 import { Button } from "@/shared/components/ui/button";
-import { Plus } from "lucide-react";
+import { Page } from "@/shared/components/page";
+import NewProjectDialog from "@/features/projects/components/NewProjectDialog";
 
 function AllProjectsPage() {
   const { projects, isLoadingProjects, projectsError, refetch } = useProjects();
@@ -16,10 +17,12 @@ function AllProjectsPage() {
     <Page
       title={"Projects"}
       actions={
-        <Button>
-          <Plus />
-          Create Project
-        </Button>
+        <NewProjectDialog>
+          <Button>
+            <Plus />
+            Create Project
+          </Button>
+        </NewProjectDialog>
       }
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:p-4">
