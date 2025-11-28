@@ -18,6 +18,7 @@ import {
 } from "@/shared/components/ui/sidebar";
 import { Link, useLocation } from "react-router";
 import { useProjects } from "@/features/projects/hooks/useProjects";
+import { usePinnedProjects } from "@/features/pin-projects/hooks/usePinnedProjects";
 
 export function NavMain({
   items,
@@ -35,6 +36,8 @@ export function NavMain({
 }) {
   const { pathname } = useLocation();
   const { projects } = useProjects();
+  const { data: pinnedProjects, isPending: isLoadingPinnedProjects } =
+    usePinnedProjects();
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -78,7 +81,7 @@ export function NavMain({
                   </CollapsibleContent>
                 </>
               ) : null} */}
-              {projects?.length ? (
+              {/* {pinnedProjects?.length ? (
                 <>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuAction className="data-[state=open]:rotate-90">
@@ -113,7 +116,7 @@ export function NavMain({
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </>
-              ) : null}
+              ) : null} */}
             </SidebarMenuItem>
           </Collapsible>
         ))}

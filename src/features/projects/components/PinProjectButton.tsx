@@ -1,3 +1,5 @@
+import { usePinProject } from "@/features/pin-projects/hooks/usePinProject";
+import { useUnPinProject } from "@/features/pin-projects/hooks/useUnpinProject";
 import { Button } from "@/shared/components/ui/button";
 import {
   Tooltip,
@@ -6,15 +8,22 @@ import {
 } from "@/shared/components/ui/tooltip";
 import { Pin } from "lucide-react";
 
-function PinProjectButton() {
+function PinProjectButton({ projectId }: { projectId: string }) {
+  const { isPinning, pinProject } = usePinProject();
+
   function handleOnPin() {
-    alert("pin");
+    pinProject({ project_id: projectId });
   }
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant={"outline"} size={"icon"} onClick={handleOnPin}>
+        <Button
+          variant={"outline"}
+          size={"icon"}
+          onClick={handleOnPin}
+          isLoading={isPinning}
+        >
           <Pin />
         </Button>
       </TooltipTrigger>
