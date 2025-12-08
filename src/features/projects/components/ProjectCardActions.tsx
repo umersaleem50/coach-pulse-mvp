@@ -9,26 +9,29 @@ import {
   DropdownMenuSeparator,
 } from "@/shared/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { BotOff, Pen, Trash, Users, UserStar } from "lucide-react";
+import { BotOff, Folder, Pen, Trash, Users, UserStar } from "lucide-react";
 import useDeleteProject from "../hooks/useDeleteProject";
-import type z from "zod";
-import type { projectFormSchema } from "./FormCreateProject";
-import EditProjectCard from "./EditProject";
+import PinProject from "./PinProject";
+import { Link } from "react-router";
+
+import CreateProjectDialog from "./CreateProjectDialog";
+
 import { generateLogoURL } from "@/shared/lib/helpers";
+import type { Project } from "@/types/project";
 
 function ProjectCardActions({
   children,
   project,
 }: {
   children: React.ReactNode;
-  project: z.infer<typeof projectFormSchema>;
+  project: Project;
 }) {
   const { deleteProject, isDeleting } = useDeleteProject();
-
-  const logoURL = generateLogoURL(project.logo);
+  const { name, logo, id } = project;
+  const logoURL = generateLogoURL(logo);
 
   function handleDeleteProject() {
-    deleteProject({ id: project.id as string });
+    deleteProject({ id: id as string });
   }
 
   return (
@@ -39,10 +42,16 @@ function ProjectCardActions({
           <Avatar className="size-6">
             <AvatarImage src={logoURL || "/no-image.jpg"} />
           </Avatar>
-          {project.name}
+          {name}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link to={`/projects/${id}`}>
+              <Folder />
+              Open Project
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <UserStar />
             Transfer Ownership
@@ -53,18 +62,22 @@ function ProjectCardActions({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
 
-          <EditProjectCard data={project}>
+          <DropdownMenuItem>
+            <PinProject projectId={id as string}></PinProject>
+          </DropdownMenuItem>
+
+          <CreateProjectDialog project={project}>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
               <Pen /> Edit Project
             </DropdownMenuItem>
-          </EditProjectCard>
+          </CreateProjectDialog>
 
           <DropdownMenuItem>
             <BotOff /> Disable Project
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <AlertDialog
-            name={project.name}
+            name={name}
             project={"project"}
             onConfirm={handleDeleteProject}
             isLoading={isDeleting}

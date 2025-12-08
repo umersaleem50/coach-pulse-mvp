@@ -20,11 +20,11 @@ function PinProjectButton({ projectId }: { projectId: string | number }) {
 
   function handleOnPin() {
     console.log("this is project id", projectId);
-    pinProject({ project_id: projectId });
+    pinProject({ project_id: projectId as string });
   }
 
   function handleOnUnPin() {
-    unPinProject({ id: projectId });
+    unPinProject({ id: projectId as string });
   }
 
   return (

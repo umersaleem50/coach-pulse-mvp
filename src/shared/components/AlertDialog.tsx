@@ -46,8 +46,7 @@ export default function AlertDialog({
               Final confirmation
             </DialogTitle>
             <DialogDescription className="sm:text-center">
-              This action cannot be undone. To confirm, please enter the
-              {project}
+              This action cannot be undone. To confirm, please enter <br />
               <span className="text-foreground"> {name}</span>.
             </DialogDescription>
           </DialogHeader>

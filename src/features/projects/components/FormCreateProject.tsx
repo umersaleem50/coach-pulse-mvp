@@ -17,8 +17,13 @@ import LocationInput from "@/shared/components/LocationInput";
 import UpdateProjectImage from "./UpdateProjectImage";
 import { useFile } from "@/store/FileContext";
 import { useCreateProject } from "../hooks/useCreateProject";
+<<<<<<< HEAD
 import useUpdateProject from "../hooks/useUpdateProject";
 import { generateLogoURL } from "@/shared/lib/helpers";
+=======
+import { generateLogoURL } from "@/shared/lib/helpers";
+import useUpdateProject from "../hooks/useUpdateProject";
+>>>>>>> 820b6ea (completed)
 
 export const projectFormSchema = z.object({
   name: z
@@ -31,18 +36,21 @@ export const projectFormSchema = z.object({
     .min(2, "Please provide location of your project."),
   logo: z.string(),
   status: z.enum(["active", "in-active"]),
+<<<<<<< HEAD
   id: z.string().or(z.number()).or(z.undefined()),
+=======
+  id: z.string().or(z.number()).optional(),
+>>>>>>> 820b6ea (completed)
 });
 
-export function FormCreateProject({
-  children,
+export function FormProject({
   onSuccess,
   data,
 }: {
-  children?: React.ReactNode;
   onSuccess?: () => void;
   data?: z.infer<typeof projectFormSchema>;
 }) {
+<<<<<<< HEAD
   const logoURL = generateLogoURL(data?.logo);
 
   const modifiedData = data ? { ...data, logo: logoURL } : null;
@@ -55,6 +63,22 @@ export function FormCreateProject({
       name: "",
       status: "active",
     },
+=======
+  const form = useForm<z.infer<typeof projectFormSchema>>({
+    resolver: zodResolver(projectFormSchema),
+    defaultValues: data
+      ? { ...data, logo: generateLogoURL(data?.logo) }
+      : {
+          location: [],
+          logo: "",
+          name: "",
+          status: "active",
+        },
+  });
+
+  const { isUpdatingProject, updateProject } = useUpdateProject({
+    id: data?.id as string,
+>>>>>>> 820b6ea (completed)
   });
 
   const { create: createProject, isPending: isCreatingProject } =
@@ -69,9 +93,16 @@ export function FormCreateProject({
         {
           file: files[0]?.file,
           location: values.location as [number, number],
+<<<<<<< HEAD
           name: values.name,
         },
         { onSuccess }
+=======
+          name: values?.name as string,
+          status: values.status,
+        },
+        { onSuccess: onSuccess }
+>>>>>>> 820b6ea (completed)
       );
     } else {
       createProject(
@@ -130,19 +161,22 @@ export function FormCreateProject({
             </FormItem>
           )}
         />
+<<<<<<< HEAD
         {/* <DialogFooter className="mt-2">
           <DialogClose asChild>
             <Button type="reset" variant={"outline"}>
               Cancel
             </Button>
           </DialogClose> */}
+=======
+
+>>>>>>> 820b6ea (completed)
         <Button
           isLoading={isCreatingProject || isUpdatingProject}
           type="submit"
         >
           Submit
         </Button>
-        {/* </DialogFooter> */}
       </form>
     </Form>
   );
