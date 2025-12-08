@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useCreateSubscription } from "./hooks/use-create-subscription";
+import { useCreateSubscription } from "./hooks/useCreateSubscription";
 import {
   Form,
   FormControl,

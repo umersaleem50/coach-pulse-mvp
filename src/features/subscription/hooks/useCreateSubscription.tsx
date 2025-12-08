@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createSubscription as createSubscriptionApi } from "@/services/subscription-api";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { toast } from "sonner";
+import { handleOnError } from "@/shared/lib/utils";
 
 export function useCreateSubscription() {
   const { user } = useAuth();
@@ -16,8 +17,9 @@ export function useCreateSubscription() {
       queryClient.invalidateQueries({ queryKey: ["subscription-plans"] });
     },
     onError: (err) =>
-      toast.error(err.name, {
-        description: err.message,
+      handleOnError({
+        err,
+        title: "Something went wrong while creating subscription.",
       }),
   });
 

@@ -1,6 +1,5 @@
 import SettingsPage from "@/pages/settings-page";
-import React from "react";
-import { Route, Routes } from "react-router";
+import { Route } from "react-router";
 
 function ProfileRoutes() {
   return (
