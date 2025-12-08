@@ -1,11 +1,8 @@
-import { Avatar, AvatarImage } from "@/shared/components/ui/avatar";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardRow,
@@ -106,7 +103,7 @@ function ProjectCard({
           <span className="text-sm ml-1">testing</span>
           <div className="flex gap-x-4 justify-end items-end w-full">
             <Button variant={"secondary"}>Open Project</Button>
-            <PinProjectButton />
+            <PinProjectButton projectId={id} />
           </div>
         </div>
       </CardFooter>

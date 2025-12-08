@@ -1,3 +1,4 @@
+import { usePinnedProjects } from "@/features/pin-projects/hooks/usePinnedProjects";
 import { usePinProject } from "@/features/pin-projects/hooks/usePinProject";
 import { useUnPinProject } from "@/features/pin-projects/hooks/useUnpinProject";
 import { Button } from "@/shared/components/ui/button";
@@ -6,13 +7,24 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/shared/components/ui/tooltip";
-import { Pin } from "lucide-react";
+import { Pin, PinOff } from "lucide-react";
 
-function PinProjectButton({ projectId }: { projectId: string }) {
+function PinProjectButton({ projectId }: { projectId: string | number }) {
   const { isPinning, pinProject } = usePinProject();
+  const { isLoading: isUnpinning, unPinProject } = useUnPinProject();
+  const { data: pinnedProjects } = usePinnedProjects();
+
+  const isPinned = pinnedProjects?.find(
+    (pin) => pin?.project?.id === projectId
+  );
 
   function handleOnPin() {
+    console.log("this is project id", projectId);
     pinProject({ project_id: projectId });
+  }
+
+  function handleOnUnPin() {
+    unPinProject({ id: projectId });
   }
 
   return (
@@ -21,14 +33,18 @@ function PinProjectButton({ projectId }: { projectId: string }) {
         <Button
           variant={"outline"}
           size={"icon"}
-          onClick={handleOnPin}
-          isLoading={isPinning}
+          onClick={isPinned ? handleOnUnPin : handleOnPin}
+          isLoading={isPinning || isUnpinning}
         >
-          <Pin />
+          {isPinned ? <PinOff /> : <Pin />}
         </Button>
       </TooltipTrigger>
       <TooltipContent>
-        <p>Pin project on sidebar.</p>
+        {isPinned ? (
+          <p>Un-Pin project on sidebar.</p>
+        ) : (
+          <p>Pin project on sidebar.</p>
+        )}
       </TooltipContent>
     </Tooltip>
   );

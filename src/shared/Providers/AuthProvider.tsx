@@ -16,7 +16,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   if (isLoading)
     return (
-      <div className="w-full h-screen">
+      <div className="w-full h-screen flex items-center justify-center">
         <Spinner />
       </div>
     );

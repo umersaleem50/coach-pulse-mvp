@@ -1,4 +1,4 @@
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight, Ellipsis, Menu, type LucideIcon } from "lucide-react";
 
 import {
   Collapsible,
@@ -19,6 +19,9 @@ import {
 import { Link, useLocation } from "react-router";
 import { useProjects } from "@/features/projects/hooks/useProjects";
 import { usePinnedProjects } from "@/features/pin-projects/hooks/usePinnedProjects";
+import ProjectCardActions from "@/features/projects/components/ProjectCardActions";
+import { generateLogoURL } from "@/shared/lib/helpers";
+import { Button } from "../ui/button";
 
 export function NavMain({
   items,
@@ -81,7 +84,7 @@ export function NavMain({
                   </CollapsibleContent>
                 </>
               ) : null} */}
-              {/* {pinnedProjects?.length ? (
+              {pinnedProjects?.length ? (
                 <>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuAction className="data-[state=open]:rotate-90">
@@ -91,16 +94,25 @@ export function NavMain({
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
-                      {projects?.map((project) => (
+                      {pinnedProjects?.map(({ project }) => (
                         <SidebarMenuSubItem key={project.id}>
                           <SidebarMenuSubButton
                             asChild
-                            isActive={pathname === project.url}
+                            isActive={pathname === `/projects/${project.id}`}
                           >
-                            <Link to={"/projects/" + project.id}>
+                            <Link to={`/projects/${project.id}`}>
                               <span>{project.name}</span>
                             </Link>
                           </SidebarMenuSubButton>
+                          <SidebarMenuAction>
+                            <ProjectCardActions
+                              projectId={project.id}
+                              projectName={project.name}
+                              projectLogo={generateLogoURL(project.logo)}
+                            >
+                              <Ellipsis />
+                            </ProjectCardActions>
+                          </SidebarMenuAction>
                         </SidebarMenuSubItem>
                       ))}
                       <SidebarMenuSubItem>
@@ -116,7 +128,7 @@ export function NavMain({
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </>
-              ) : null} */}
+              ) : null}
             </SidebarMenuItem>
           </Collapsible>
         ))}
