@@ -9,8 +9,8 @@ import {
 } from "@/shared/components/ui/dialog";
 import { FileProvider } from "@/store/FileContext";
 
-import { FormCreateProject } from "./FormCreateProject";
 import { useState } from "react";
+import { FormProject } from "./FormCreateProject";
 
 function NewProjectDialog({ children }: { children: React.ReactNode }) {
   const [openDialog, setOpenDialog] = useState(false);
@@ -29,7 +29,7 @@ function NewProjectDialog({ children }: { children: React.ReactNode }) {
           </DialogDescription>
         </DialogHeader>
         <FileProvider>
-          <FormCreateProject onSuccess={handleCloseDialog}></FormCreateProject>
+          <FormProject onSuccess={handleCloseDialog}></FormProject>
         </FileProvider>
       </DialogContent>
     </Dialog>
