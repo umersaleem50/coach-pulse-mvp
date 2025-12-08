@@ -32,7 +32,7 @@ function AllProjectsPage() {
         {isLoadingProjects ? <LoadingProjects numOfProjects={3} /> : null}
         {!isLoadingProjects && !projects?.length ? <EmptyProjectCard /> : null}
         {projects?.map((project: Project) => (
-          <ProjectCard {...project} key={project.id} />
+          <ProjectCard project={project} key={project.id} />
         ))}
         {projects?.length ? <NewProjectCard /> : null}
       </div>

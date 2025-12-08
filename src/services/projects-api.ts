@@ -18,7 +18,6 @@ export async function uploadProjectLogo(logoFile: File) {
     .from("projects")
     .upload(fileName, logoFile);
 
-  console.log("storage error", storageError);
   if (storageError) throw storageError;
 
   return data;
@@ -77,8 +76,6 @@ export async function createProject({ name, location, logo }: Project) {
       user_id: user?.id as string,
     });
 
-    console.log(ownership, project);
-
     return { project, assign: ownership };
   } catch (error) {
     if (error) throw error;
@@ -91,8 +88,6 @@ export async function createProjectAPI({ name, location, logo }: Project) {
     .insert([{ name, location, logo }])
     .select()
     .single();
-
-  console.log("create-project-api-error", error);
 
   if (error) throw error;
 
@@ -122,7 +117,6 @@ export async function assignProjectRole({
 export async function deleteProject({ id }: { id: string }) {
   const { error } = await supabase.from("projects").delete().eq("id", id);
 
-  console.log("assign error", error);
   if (error) throw error;
 
   return null;
@@ -135,13 +129,32 @@ export async function updateProjectApi({
   id: string;
   payload: any;
 }) {
-  const { data, error } = await supabase
-    .from("projects")
-    .update(payload)
-    .eq("id", id)
-    .select();
+  try {
+    let logoPath;
+    const { file: logo } = payload;
 
-  if (error) throw error;
+    if (logo instanceof File) {
+      const bucket = await uploadProjectLogo(logo);
 
-  return data;
+      logoPath = bucket?.path;
+    } else {
+      logoPath = logo;
+    }
+
+    const updatedPayload = { ...payload, logo: logoPath };
+
+    delete updatedPayload.file;
+
+    const { data } = await supabase
+      .from("projects")
+      .update(updatedPayload)
+      .eq("id", id)
+
+      .select()
+      .single();
+
+    return data;
+  } catch (error) {
+    if (error) throw error;
+  }
 }

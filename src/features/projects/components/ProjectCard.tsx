@@ -10,7 +10,7 @@ import {
 } from "@/shared/components/ui/card";
 
 import { Separator } from "@/shared/components/ui/separator";
-import { Ellipsis, MapPin, Menu } from "lucide-react";
+import { Ellipsis, MapPin } from "lucide-react";
 
 import PinProjectButton from "./PinProjectButton";
 import GroupAvatars from "@/shared/components/GroupAvatars";
@@ -18,29 +18,8 @@ import type { Project } from "@/types/project";
 import { generateLogoURL } from "@/shared/lib/helpers";
 import ProjectCardActions from "./ProjectCardActions";
 
-interface IProfile {
-  full_name: string;
-  email: string;
-  avatar_url: string;
-}
-
-export interface IProject {
-  name: string;
-  status?: "active" | "closed";
-  owner: IProfile;
-}
-
-function ProjectCard({
-  name,
-  admins,
-  logo,
-  id,
-  created_at,
-  owners,
-  status,
-  staff,
-  location,
-}: Project) {
+function ProjectCard({ project }: { project: Project }) {
+  const { name, admins, logo, id, owners, status } = project;
   const logoURL = generateLogoURL(logo);
 
   return (
@@ -66,7 +45,7 @@ function ProjectCard({
               </div>
             </div>
           </div>
-          <ProjectCardActions project={{ name, logo, id, location, status }}>
+          <ProjectCardActions project={project}>
             <Button variant={"ghost"} size={"icon"}>
               <Ellipsis />
             </Button>

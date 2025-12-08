@@ -105,11 +105,7 @@ export function NavMain({
                             </Link>
                           </SidebarMenuSubButton>
                           <SidebarMenuAction>
-                            <ProjectCardActions
-                              projectId={project.id}
-                              projectName={project.name}
-                              projectLogo={generateLogoURL(project.logo)}
-                            >
+                            <ProjectCardActions project={project}>
                               <Ellipsis />
                             </ProjectCardActions>
                           </SidebarMenuAction>
