@@ -15,7 +15,12 @@ export default function useUpdateProject({ id }: { id: string | number }) {
   });
 
   function handleOnSuccess(data: any) {
-    queryClient.invalidateQueries({ queryKey: ["projects"] });
+    queryClient.invalidateQueries({
+      queryKey: ["projects"],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["pinned-projects"],
+    });
     return toast.success(`Project:${data.name} updated successfully!`);
   }
 

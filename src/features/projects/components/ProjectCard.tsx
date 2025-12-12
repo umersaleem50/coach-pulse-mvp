@@ -17,10 +17,16 @@ import GroupAvatars from "@/shared/components/GroupAvatars";
 import type { Project } from "@/types/project";
 import { generateLogoURL } from "@/shared/lib/helpers";
 import ProjectCardActions from "./ProjectCardActions";
+import { useReverseGeo } from "@/shared/hooks/useReverseGeo";
 
 function ProjectCard({ project }: { project: Project }) {
-  const { name, admins, logo, id, owners, status } = project;
+  const { name, admins, logo, id, owners, status, location } = project;
   const logoURL = generateLogoURL(logo);
+
+  const { address, error, loading } = useReverseGeo({
+    lat: location[0],
+    lng: location[1],
+  });
 
   return (
     <Card>
@@ -52,35 +58,38 @@ function ProjectCard({ project }: { project: Project }) {
           </ProjectCardActions>
         </div>
       </CardHeader>
-      <CardContent className="grid grid-cols-2">
-        <CardRow label="Owners:">
-          <GroupAvatars
-            users={owners}
-            role="owner"
-            onInviteMember={() => alert("working")}
-          />
-        </CardRow>
-        <CardRow label="Team:">
-          <GroupAvatars
-            users={admins}
-            role="admin"
-            onInviteMember={() => alert("working")}
-          />
-        </CardRow>
-        <CardRow label="Staff:">
-          <GroupAvatars
-            users={admins}
-            role="staff"
-            onInviteMember={() => alert("working")}
-          />
-        </CardRow>
+      <CardContent className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1">
+        <div className="grid grid-cols-2">
+          <CardRow label="Owners:">
+            <GroupAvatars
+              users={owners}
+              role="owner"
+              onInviteMember={() => alert("working")}
+            />
+          </CardRow>
+          <CardRow label="Team:">
+            <GroupAvatars
+              users={admins}
+              role="admin"
+              onInviteMember={() => alert("working")}
+            />
+          </CardRow>
+          <CardRow label="Staff:">
+            <GroupAvatars
+              users={admins}
+              role="staff"
+              onInviteMember={() => alert("working")}
+            />
+          </CardRow>
+        </div>
       </CardContent>
       <Separator />
       <CardFooter>
         <div className="flex justify-between w-full items-center">
-          <MapPin className="size-5" />
-          <span className="text-sm ml-1">testing</span>
+          <MapPin size={32} />
+          <p className="text-sm w-full ml-4">{address}</p>
           <div className="flex gap-x-4 justify-end items-end w-full">
+            <Button variant={"default"}>Desk Mode</Button>
             <Button variant={"secondary"}>Open Project</Button>
             <PinProjectButton projectId={id} />
           </div>
