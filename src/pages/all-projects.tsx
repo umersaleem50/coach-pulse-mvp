@@ -25,7 +25,7 @@ function AllProjectsPage() {
         </NewProjectDialog>
       }
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 lg:p-4">
+      <div className="grid  gap-4 lg:p-4">
         {projectsError ? (
           <ErrorCard error={projectsError} onRetry={refetch} />
         ) : null}

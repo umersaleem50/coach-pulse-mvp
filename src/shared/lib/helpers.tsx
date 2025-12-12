@@ -27,7 +27,7 @@ export function groupProjectUsers(projects: any[]) {
 
 export function generateAvatarURL(avatar: string) {
   if (!avatar) return "";
-  return BUCKET_URLS.avatar + avatar;
+  return `${BUCKET_URLS.avatar}${avatar}`;
 }
 
 export function generateLogoURL(logo: string) {
