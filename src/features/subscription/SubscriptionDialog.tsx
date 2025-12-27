@@ -12,8 +12,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
-import SubscriptionPlanForm from "./SubscriptionPlanForm";
+
 import { Button } from "@/shared/components/ui/button";
+import SubscriptionForm from "./SubscriptionForm";
 
 function SubscriptionDialog({
   children,
@@ -37,14 +38,14 @@ function SubscriptionDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <SubscriptionPlanForm onSuccess={() => setOpen(false)}>
+        <SubscriptionForm onSuccess={() => setOpen(false)} data={data}>
           {/* <SubscriptionPlanForm onSuccess={() => setOpen(false)} data={data}> */}
           <DialogFooter>
             <DialogClose asChild>
               <Button variant={"outline"}>Cancel</Button>
             </DialogClose>
           </DialogFooter>
-        </SubscriptionPlanForm>
+        </SubscriptionForm>
       </DialogContent>
     </Dialog>
   );

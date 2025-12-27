@@ -2,9 +2,9 @@ import { Sidebar, SidebarContent } from "../ui/sidebar";
 import AppSidebarHeader from "./sidebar-header";
 
 import { NavMain } from "./nav-main";
-import { SIDEBAR_DATA } from "@/lib/constants";
-import { NavProjects } from "./nav-projects";
+
 import { NavUser } from "./nav-user";
+import { SIDEBAR_DATA } from "@/constants";
 
 function AppSidebar() {
   return (
@@ -12,9 +12,8 @@ function AppSidebar() {
       <AppSidebarHeader />
       <SidebarContent>
         <NavMain items={SIDEBAR_DATA.navMain} />
-        <NavProjects projects={SIDEBAR_DATA.projects} />
       </SidebarContent>
-      <NavUser user={SIDEBAR_DATA.user} />
+      <NavUser />
     </Sidebar>
   );
 }

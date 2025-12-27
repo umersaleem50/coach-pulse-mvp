@@ -88,8 +88,8 @@ export function FormUserDetails({ onSuccess = () => {} }: { onSuccess?: any }) {
                   <Alert variant={"destructive"}>
                     <AlertCircle />
                     <AlertDescription>
-                      You can't update your email as it's linked with your{" "}
-                      {user?.app_metadata.provider}'s account
+                      You can't update your email as current account is linked
+                      with {user?.app_metadata.provider}'s account
                     </AlertDescription>
                   </Alert>
                 </FormDescription>

@@ -6,7 +6,8 @@ import { Outlet } from "react-router";
 
 function SettingsLayout() {
   return (
-    <Page title="Settings">
+    <Page>
+      <Page.Header title="Settings" />
       <SidebarProvider>
         <SettingsSidebar />
         <SidebarInset className="md:p-4">

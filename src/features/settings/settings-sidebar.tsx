@@ -1,4 +1,4 @@
-import { SETTINGS_SIDEBAR_DATA } from "@/lib/constants";
+import { SETTINGS_SIDEBAR_DATA } from "@/constants";
 import { Badge } from "@/shared/components/ui/badge";
 import {
   Sidebar,

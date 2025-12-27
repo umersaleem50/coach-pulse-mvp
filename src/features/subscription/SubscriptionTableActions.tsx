@@ -7,7 +7,13 @@ import InputWithIcon from "@/shared/components/InputWithIcon";
 import SubscriptionDialog from "./SubscriptionDialog";
 import { useDeleteSubscription } from "./hooks/useDeleteSubscription";
 
-export function SubscriptionTableActions() {
+export interface ISubscriptionActions {
+  disabled?: boolean;
+}
+
+export function SubscriptionTableActions({
+  disabled = false,
+}: ISubscriptionActions) {
   const { table } = useDataTable();
   const { deleteSubscription, isDeleting } = useDeleteSubscription();
 
@@ -37,6 +43,7 @@ export function SubscriptionTableActions() {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             table.getColumn("name")?.setFilterValue(e.target.value)
           }
+          disabled={disabled}
         />
         {selectedRows.length ? (
           <>
@@ -61,7 +68,7 @@ export function SubscriptionTableActions() {
         ) : null}
       </div>
       <SubscriptionDialog>
-        <Button size="sm">
+        <Button size="sm" disabled={disabled}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Add Subscription
         </Button>

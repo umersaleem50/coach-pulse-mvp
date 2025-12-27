@@ -1,8 +1,9 @@
 import Logo from "@/shared/components/logo";
 import { Link, Outlet } from "react-router";
 import RoleCard from "../select-role/role-card";
-import { roleGradients } from "@/lib/constants";
+
 import { buttonVariants } from "@/shared/components/ui/button";
+import { roleGradients } from "@/constants";
 
 function AuthLayout() {
   return (
@@ -32,7 +33,6 @@ function AuthLayout() {
             className={buttonVariants({
               variant: "default",
               className: "mt-3 bg-us",
-              colors: "user",
             })}
             to={"/auth/login"}
           >
@@ -51,7 +51,6 @@ function AuthLayout() {
             className={buttonVariants({
               variant: "default",
               className: "mt-3",
-              colors: "supplier",
             })}
             to={"/auth/login"}
           >

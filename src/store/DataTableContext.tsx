@@ -55,7 +55,7 @@ export function DataTableProvider<TData, TValue>({
   });
 
   return (
-    <DataTableContext.Provider value={{ table, ...restProps }}>
+    <DataTableContext.Provider value={{ data, table, ...restProps }}>
       {children}
     </DataTableContext.Provider>
   );

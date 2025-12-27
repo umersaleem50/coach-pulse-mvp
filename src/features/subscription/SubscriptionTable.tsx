@@ -1,18 +1,19 @@
-import { Spinner } from "@/shared/components/ui/spinner";
 import { useSubcriptions } from "./hooks/useSubscriptions";
 import { DataTableProvider } from "@/store/DataTableContext";
 import { SubscriptionTableActions } from "./SubscriptionTableActions";
 import DataTable from "@/shared/components/ui/data-table";
-import { SubscriptionColumn } from "./SubscriptionColumn";
+import { SubscriptionColumn, type Subscription } from "./SubscriptionColumn";
+import { SubscriptionLoadingColumn } from "./SubscriptionLoadingColumn";
 
 export function SubcriptionTable() {
   const { isPending, subscriptions } = useSubcriptions();
 
-  if (isPending) return <Spinner />;
+  const columns = isPending ? SubscriptionLoadingColumn : SubscriptionColumn;
+  const data = isPending ? Array.from({ length: 2 }) : subscriptions;
 
   return (
-    <div className="space-y-4 px-4 py-6 lg:px-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-2 md:mb-3 lg:mb-4">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">
             Subscription Plans
@@ -23,14 +24,12 @@ export function SubcriptionTable() {
         </div>
       </div>
       <div className="rounded-md border p-2">
-        <DataTableProvider
-          data={subscriptions || []}
-          columns={SubscriptionColumn}
-        >
-          <SubscriptionTableActions />
+        <DataTableProvider data={data as Subscription[]} columns={columns}>
+          <SubscriptionTableActions disabled={isPending} />
           <DataTable />
+          <DataTable.Pagination disabled={isPending} />
         </DataTableProvider>
       </div>
-    </div>
+    </>
   );
 }

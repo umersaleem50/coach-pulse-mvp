@@ -11,10 +11,10 @@ export function useCreateSubscription() {
     mutationFn: (payload: any) =>
       createSubscriptionApi({ trainer: user?.id, ...payload }),
     onSuccess: () => {
-      toast.success("Plan created!", {
-        description: "Your workout plan is ready for registering clients",
+      toast.success("Subscription created!", {
+        description: "Your subscription is ready to offer.",
       });
-      queryClient.invalidateQueries({ queryKey: ["subscription-plans"] });
+      queryClient.invalidateQueries({ queryKey: ["subscriptions"] });
     },
     onError: (err) =>
       handleOnError({

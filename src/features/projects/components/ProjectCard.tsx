@@ -18,6 +18,7 @@ import type { Project } from "@/types/project";
 import { generateLogoURL } from "@/shared/lib/helpers";
 import ProjectCardActions from "./ProjectCardActions";
 import { useReverseGeo } from "@/shared/hooks/useReverseGeo";
+import { cn } from "@/lib/utils";
 
 function ProjectCard({ project }: { project: Project }) {
   const { name, admins, logo, id, owners, status, location } = project;
@@ -43,7 +44,10 @@ function ProjectCard({ project }: { project: Project }) {
                 <span className="text-sm">Status:</span>{" "}
                 <Badge variant={"outline"} className="capitalize">
                   <span
-                    className="size-1.5 rounded-full bg-emerald-500"
+                    className={cn(
+                      "size-1.5 rounded-full",
+                      status === "active" ? "bg-green-500" : "bg-red-400"
+                    )}
                     aria-hidden="true"
                   ></span>
                   {status}
@@ -58,8 +62,8 @@ function ProjectCard({ project }: { project: Project }) {
           </ProjectCardActions>
         </div>
       </CardHeader>
-      <CardContent className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1">
-        <div className="grid grid-cols-2">
+      <CardContent className="">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
           <CardRow label="Owners:">
             <GroupAvatars
               users={owners}
@@ -85,10 +89,12 @@ function ProjectCard({ project }: { project: Project }) {
       </CardContent>
       <Separator />
       <CardFooter>
-        <div className="flex justify-between w-full items-center">
-          <MapPin size={32} />
-          <p className="text-sm w-full ml-4">{address}</p>
-          <div className="flex gap-x-4 justify-end items-end w-full">
+        <div className="flex flex-col md:flex-row justify-between w-full md:items-center">
+          <div className="flex items-center">
+            <MapPin size={24} />
+            <p className="text-xs w-full ml-2">{address}</p>
+          </div>
+          <div className="flex gap-x-4 justify-end md:items-end w-full">
             <Button variant={"default"}>Desk Mode</Button>
             <Button variant={"secondary"}>Open Project</Button>
             <PinProjectButton projectId={id} />

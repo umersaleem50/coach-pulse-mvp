@@ -1,15 +1,8 @@
-import { ArrowUpDown, Clock, RefreshCwOff, RotateCcw } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Button } from "@/shared/components/ui/button";
-import { Badge } from "@/shared/components/ui/badge";
-import { formatCurrency, formatWeeksAndDays } from "@/shared/lib/utils";
-import SubscriptionActions from "./SubscriptionRowAction";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/shared/components/ui/tooltip";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 
 export type Subscription = {
   created_at: string;
@@ -23,11 +16,12 @@ export type Subscription = {
   payment_type?: "recurring" | "one-time";
 };
 
-export const SubscriptionColumn: ColumnDef<Subscription>[] = [
+export const SubscriptionLoadingColumn: ColumnDef<Subscription>[] = [
   {
     accessorKey: "id",
     header: ({ table }) => (
       <Checkbox
+        disabled
         checked={
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
@@ -38,6 +32,7 @@ export const SubscriptionColumn: ColumnDef<Subscription>[] = [
     ),
     cell: ({ row }) => (
       <Checkbox
+        disabled
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select Row"
@@ -61,14 +56,11 @@ export const SubscriptionColumn: ColumnDef<Subscription>[] = [
         </Button>
       </div>
     ),
-    cell: ({ row }) => row.getValue("name"),
+    cell: () => <Skeleton className="w-20 h-5" />,
   },
   {
     accessorKey: "price",
-    cell: ({ row }) => {
-      const { price, currency } = row.original;
-      return formatCurrency(price, currency);
-    },
+    cell: () => <Skeleton className="w-20 h-5" />,
     header: ({ column }) => (
       <div className="flex items-center gap-1">
         Price
@@ -86,29 +78,12 @@ export const SubscriptionColumn: ColumnDef<Subscription>[] = [
   {
     accessorKey: "description",
     header: () => <div className="hidden md:table-cell">Description</div>,
-    cell: ({ row }) => (
-      <Tooltip>
-        <TooltipTrigger>
-          <div className="hidden max-w-xs truncate md:table-cell">
-            {row.getValue("description")}
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>{row.getValue("description")}</TooltipContent>
-      </Tooltip>
-    ),
+    cell: () => <Skeleton className="h-5 max-w-xs w-full" />,
   },
   {
     accessorKey: "is_recurring",
     header: "Payment Type",
-    cell: ({ row }) => (
-      <Badge
-        variant={row.getValue("is_recurring") ? "outline" : "default"}
-        className="capitalize"
-      >
-        {row.getValue("is_recurring") ? <RotateCcw /> : <RefreshCwOff />}
-        {row.getValue("is_recurring") ? "Recurring" : "One Time"}
-      </Badge>
-    ),
+    cell: () => <Skeleton className="w-20 h-5" />,
   },
 
   {
@@ -126,16 +101,11 @@ export const SubscriptionColumn: ColumnDef<Subscription>[] = [
         </Button>
       </div>
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center gap-x-2">
-        <Clock className="h-4 w-4 text-primary" />
-        {formatWeeksAndDays(row.getValue("active_duration"))}
-      </div>
-    ),
+    cell: () => <Skeleton className="w-26 h-5" />,
   },
   {
     accessorKey: "action",
     header: "Actions",
-    cell: ({ row }) => <SubscriptionActions row={row} />,
+    cell: () => <Skeleton className="w-5 h-5" />,
   },
 ];

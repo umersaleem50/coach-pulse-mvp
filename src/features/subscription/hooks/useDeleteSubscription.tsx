@@ -10,7 +10,7 @@ export function useDeleteSubscription() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["subscriptions"] });
       return toast.success("Subscription Deleted!", {
-        description: `You subscription with id:${data?.subscriptionId} deleted successfully!`,
+        description: `Your subscription deleted successfully!`,
       });
     },
     onError: (err) =>
