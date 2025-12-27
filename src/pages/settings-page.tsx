@@ -1,5 +1,4 @@
-import { SidebarInset, SidebarTrigger } from "@/shared/components/ui/sidebar";
-import React from "react";
+import { SidebarTrigger } from "@/shared/components/ui/sidebar";
 
 function SettingsPage() {
   return <SidebarTrigger />;

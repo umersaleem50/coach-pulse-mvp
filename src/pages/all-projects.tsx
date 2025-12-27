@@ -14,18 +14,20 @@ function AllProjectsPage() {
   const { projects, isLoadingProjects, projectsError, refetch } = useProjects();
 
   return (
-    <Page
-      title={"Projects"}
-      actions={
-        <NewProjectDialog>
-          <Button>
-            <Plus />
-            Create Project
-          </Button>
-        </NewProjectDialog>
-      }
-    >
-      <div className="grid  gap-4 lg:p-4">
+    <Page>
+      <Page.Header
+        title={"Projects"}
+        actions={
+          <NewProjectDialog>
+            <Button>
+              <Plus />
+              Create Project
+            </Button>
+          </NewProjectDialog>
+        }
+      />
+
+      <Page.Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(26rem,1fr))] gap-4 lg:p-4 md:p-3 p-2">
         {projectsError ? (
           <ErrorCard error={projectsError} onRetry={refetch} />
         ) : null}
@@ -35,7 +37,7 @@ function AllProjectsPage() {
           <ProjectCard project={project} key={project.id} />
         ))}
         {projects?.length ? <NewProjectCard /> : null}
-      </div>
+      </Page.Container>
     </Page>
   );
 }

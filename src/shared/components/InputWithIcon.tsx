@@ -3,7 +3,12 @@ import { SearchIcon } from "lucide-react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 
-export default function InputWithIcon(props) {
+export interface InputWithIconProps extends React.ComponentProps<"input"> {
+  label?: string;
+  icon: React.ReactNode;
+}
+
+export default function InputWithIcon(props: InputWithIconProps) {
   const id = useId();
   return (
     <div className="flex flex-col gap-y-1">

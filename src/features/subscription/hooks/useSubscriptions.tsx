@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useSubcriptions() {
   const { isPending, data: subscriptions } = useQuery({
-    queryKey: ["subscription-plans"],
+    queryKey: ["subscriptions"],
     queryFn: getAllSubscriptions,
   });
 

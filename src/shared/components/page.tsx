@@ -15,7 +15,6 @@ function PageHeader({
   return (
     <div className="flex items-center py-1 px-2 sm:py-2 sm:px-3 md:px-4 md:py-3 border-b">
       <SidebarTrigger />
-
       <Separator orientation="vertical" className="mx-4 " />
       <ThemeToggle />
       <Separator orientation="vertical" className="mx-4 " />
@@ -30,23 +29,36 @@ function PageHeader({
 
 function Page({
   children,
-  title,
-  description,
   className,
-  actions,
 }: React.ComponentProps<"div"> & {
   children: React.ReactNode;
-  title: string;
-  description?: string;
-  actions?: React.ReactNode;
 }) {
   return (
     <div className={cn(className, "flex flex-col h-full")}>
-      <PageHeader title={title} description={description} actions={actions} />
       {/* <PageContent>{children}</PageContent> */}
       {children}
     </div>
   );
 }
 
-export { Page, PageHeader };
+function PageContainer({
+  children,
+  className,
+  ...props
+}: {
+  children: React.ReactNode;
+  className?: string;
+  props?: React.ComponentProps<"div">;
+}) {
+  return (
+    <div className={cn("lg:p-4 md:p-3 p-2", className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+Page.Container = PageContainer;
+
+Page.Header = PageHeader;
+
+export { Page };

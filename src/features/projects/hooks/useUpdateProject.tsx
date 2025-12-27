@@ -3,13 +3,11 @@ import { updateProjectApi } from "@/services/projects-api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-export default function useUpdateProject({ id }: { id: string | number }) {
+export default function useUpdateProject() {
   const queryClient = useQueryClient();
 
   const { mutate: updateProject, isPending: isUpdatingProject } = useMutation({
-    mutationFn: (payload) => {
-      return updateProjectApi({ id, payload });
-    },
+    mutationFn: updateProjectApi,
     onSuccess: handleOnSuccess,
     onError: handleOnError,
   });

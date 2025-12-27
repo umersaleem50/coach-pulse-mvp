@@ -16,6 +16,7 @@ import InputWithSelect from "@/shared/components/input-with-select";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Button } from "@/shared/components/ui/button";
 import InputAddOn from "@/shared/components/InputAddOn";
+import { useUpdateSubscription } from "./hooks/useUpdateSubscription";
 
 const formSchema = z.object({
   name: z
@@ -27,11 +28,13 @@ const formSchema = z.object({
   active_duration: z.number().min(1, "Duration should be of atleast 1 day."),
 });
 
-function SubscriptionPlanForm({ children, onSuccess = () => {} }) {
+function SubscriptionPlanForm({ children, onSuccess = () => {}, data }) {
   const { createSubscription, isPending } = useCreateSubscription();
+  const { isUpdatingSubscription, updateSubscription } =
+    useUpdateSubscription();
 
   const form = useForm<z.infer<typeof formSchema>>({
-    defaultValues: {
+    defaultValues: data || {
       name: "",
       price: 9.99,
       active_duration: 30,
@@ -41,12 +44,23 @@ function SubscriptionPlanForm({ children, onSuccess = () => {} }) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    createSubscription(values, {
-      onSuccess: () => {
-        form.reset();
-        onSuccess();
-      },
-    });
+    if (data) {
+      updateSubscription(
+        { id: data.id, payload: values },
+        {
+          onSuccess: () => {
+            form.reset();
+            onSuccess();
+          },
+        }
+      );
+    } else
+      createSubscription(values, {
+        onSuccess: () => {
+          form.reset();
+          onSuccess();
+        },
+      });
   }
 
   return (
@@ -127,8 +141,12 @@ function SubscriptionPlanForm({ children, onSuccess = () => {} }) {
         />
         <div className="justify-end flex gap-x-4">
           {children}
-          <Button className="self-end" isLoading={isPending} type="submit">
-            Create Plan
+          <Button
+            className="self-end"
+            isLoading={isPending || isUpdatingSubscription}
+            type="submit"
+          >
+            Confirm {data ? "Changes" : ""}
           </Button>
         </div>
       </form>

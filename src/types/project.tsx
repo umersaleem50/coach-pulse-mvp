@@ -8,6 +8,6 @@ export interface Project {
   admins: UserProfile[];
   staff: UserProfile[];
   created_at: Date;
-  status: "active" | "in-active";
+  status: "active" | "disabled";
   location: [number, number];
 }

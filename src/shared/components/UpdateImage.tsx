@@ -1,8 +1,7 @@
-import { CircleUserRoundIcon, Image, XIcon } from "lucide-react";
+import { Image, XIcon } from "lucide-react";
 
 import { Button } from "@/shared/components/ui/button";
 import {
-  useFileUpload,
   type FileMetadata,
   type FileUploadActions,
 } from "@/shared/hooks/use-file-upload";
@@ -13,7 +12,6 @@ import {
 } from "@/shared/components/ui/avatar";
 import { useEffect } from "react";
 import { useFile } from "@/store/FileContext";
-import { BUCKET_URLS } from "@/lib/constants";
 import { Skeleton } from "./ui/skeleton";
 
 export interface IUpdateImage {

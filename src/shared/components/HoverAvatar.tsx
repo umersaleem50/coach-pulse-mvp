@@ -8,7 +8,7 @@ function HoverAvatar({
   user,
   children,
 }: {
-  user: UserProfile;
+  user: Pick<UserProfile, "full_name" | "avatar_url" | "email">;
   children: React.ReactNode;
 }) {
   const avatar = generateAvatarURL(user.avatar_url);

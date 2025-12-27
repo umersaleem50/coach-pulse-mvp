@@ -9,7 +9,16 @@ import {
   DropdownMenuSeparator,
 } from "@/shared/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { BotOff, Folder, Pen, Trash, Users, UserStar } from "lucide-react";
+import {
+  BotOff,
+  Folder,
+  Pen,
+  ShieldCheckIcon,
+  ShieldCloseIcon,
+  Trash,
+  Users,
+  UserStar,
+} from "lucide-react";
 import useDeleteProject from "../hooks/useDeleteProject";
 import PinProject from "./PinProject";
 import { Link } from "react-router";
@@ -18,6 +27,9 @@ import CreateProjectDialog from "./CreateProjectDialog";
 
 import { generateLogoURL } from "@/shared/lib/helpers";
 import type { Project } from "@/types/project";
+import useUpdateProject from "../hooks/useUpdateProject";
+import { Button } from "@/shared/components/ui/button";
+import { useState } from "react";
 
 function ProjectCardActions({
   children,
@@ -26,16 +38,37 @@ function ProjectCardActions({
   children: React.ReactNode;
   project: Project;
 }) {
+  const { name, logo, id, status } = project;
   const { deleteProject, isDeleting } = useDeleteProject();
-  const { name, logo, id } = project;
+  const { updateProject, isUpdatingProject } = useUpdateProject();
+  const [isOpen, setOpen] = useState(false);
+
   const logoURL = generateLogoURL(logo);
 
+  function handleCloseMenu() {
+    setOpen(false);
+  }
+
   function handleDeleteProject() {
-    deleteProject({ id: id as string });
+    deleteProject({ id: id as string }, { onSettled: handleCloseMenu });
+  }
+
+  function handleProjectStatus() {
+    if (status === "active") {
+      updateProject(
+        { id: id as string, payload: { status: "disabled" } },
+        { onSettled: handleCloseMenu }
+      );
+    } else {
+      updateProject(
+        { id: id as string, payload: { status: "active" } },
+        { onSettled: handleCloseMenu }
+      );
+    }
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel className="flex items-center gap-x-2">
@@ -72,8 +105,23 @@ function ProjectCardActions({
             </DropdownMenuItem>
           </CreateProjectDialog>
 
-          <DropdownMenuItem>
-            <BotOff /> Disable Project
+          <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
+            <Button
+              isLoading={isUpdatingProject}
+              onClick={handleProjectStatus}
+              variant={"ghost"}
+              size={"sm"}
+              className="w-full justify-start"
+            >
+              {!isUpdatingProject ? (
+                status === "active" ? (
+                  <ShieldCloseIcon />
+                ) : (
+                  <ShieldCheckIcon />
+                )
+              ) : null}
+              {status === "active" ? "Disable" : "Activate"} Project
+            </Button>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <AlertDialog

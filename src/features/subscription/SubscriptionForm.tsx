@@ -19,6 +19,7 @@ import CurrencyInput from "@/shared/components/CurrencyInput";
 import type { SUPPORTED_CURRENCIES_TYPES } from "@/constants";
 import { useUpdateSubscription } from "./hooks/useUpdateSubscription";
 import { Switch } from "@/shared/components/ui/switch";
+import { formatCurrency } from "@/shared/lib/utils";
 
 export const subscriptionFormSchema = z.object({
   id: z.string().optional(),
@@ -61,6 +62,10 @@ function SubscriptionForm({
     >,
     resolver: zodResolver(subscriptionFormSchema),
   });
+
+  const currency = form.watch("currency");
+  const platformFee = 0;
+  const totalCost = form.watch("price") + platformFee;
 
   function onSubmit(values: z.infer<typeof subscriptionFormSchema>) {
     if (!data) {
@@ -139,6 +144,7 @@ function SubscriptionForm({
                 {/* <Input placeholder="Beginner Plan" {...field} /> */}
                 <CurrencyInput
                   {...field}
+                  selected={form.getValues("currency")}
                   placeholder={"0.00"}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                   onSelect={(value: SUPPORTED_CURRENCIES_TYPES) =>
@@ -193,12 +199,14 @@ function SubscriptionForm({
 
         <div className="justify-end flex gap-x-4 items-center">
           <div className=" self-center mr-auto">
-            <p className="text-md text-muted-foreground font-semibold ">
-              ${form.getValues("price")} ={" "}
-              <span className="text-primary">$X</span>
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Total cost of subscription
+            <p className="text-muted-foreground flex items-center justify-center ">
+              <span className="text-xs">
+                {formatCurrency(form.watch("price"), currency)} +{" "}
+                {formatCurrency(platformFee, currency)}(platform fee) =
+              </span>
+              <span className="text-md text-primary font-semibold ml-1">
+                {formatCurrency(totalCost, currency)}
+              </span>
             </p>
           </div>
           {children}

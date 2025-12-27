@@ -1,4 +1,4 @@
-import { BUCKET_URLS } from "@/lib/constants";
+import { BUCKET_URLS } from "@/constants";
 import type { UserProfile } from "@/types/global";
 import type { Project } from "@/types/project";
 
