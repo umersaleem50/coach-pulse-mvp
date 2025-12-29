@@ -1,6 +1,7 @@
 import { getAddress } from "@/services/api-reverse-geo";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { FilterFn } from "@tanstack/react-table";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,3 +32,12 @@ export async function fetchAddress() {
   // 3) Then we return an object with the data that we are interested in
   return { position, address };
 }
+
+export const arrayIncludesFilter: FilterFn<any> = (
+  row,
+  columnId,
+  filterValue
+) => {
+  const values = row.getValue<string[]>(columnId);
+  return Array.isArray(values) && values.includes(filterValue);
+};

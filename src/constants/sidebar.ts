@@ -52,7 +52,7 @@ export const SIDEBAR_DATA = {
     },
     {
       title: "Exersices",
-      url: "#",
+      url: "/exercises",
       icon: Dumbbell,
     },
     SETTINGS_SIDEBAR_DATA,

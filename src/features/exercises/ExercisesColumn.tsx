@@ -4,6 +4,15 @@ import { Checkbox } from "@/shared/components/ui/checkbox";
 import { generateAvatarURL } from "@/shared/lib/helpers";
 import type { ColumnDef } from "@tanstack/react-table";
 import ButtonPlayExercise from "./ButtonPlayExercise";
+import { arrayIncludesFilter } from "@/lib/utils";
+import {
+  COACH_TYPE_LABEL_MAP,
+  GENDER_TYPE_LABLE_MAP,
+  type GenderType,
+  type CoachType,
+  MUSCLE_GROUP_LABEL_MAP,
+  type MuscleGroup,
+} from "@/constants";
 
 export interface Exercise {
   id: string;
@@ -57,20 +66,28 @@ export const ExercisesColumn: ColumnDef<Exercise>[] = [
   {
     accessorKey: "muscles_group",
     header: "Muscles Group",
-    cell: ({ row }) => (
-      <div className="flex flex-wrap gap-1">
-        {row.getValue("muscles_group")?.map((muscle: string) => (
-          <Badge key={muscle} variant="outline" className="whitespace-nowrap">
-            {muscle}
-          </Badge>
-        ))}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const values: MuscleGroup[] = row.getValue("muscles_group");
+      const valueLables = values.map((value) => MUSCLE_GROUP_LABEL_MAP[value]);
+      return (
+        <div className="flex flex-wrap gap-1">
+          {valueLables.map((muscle: string) => (
+            <Badge key={muscle} variant="outline" className="whitespace-nowrap">
+              {muscle}
+            </Badge>
+          ))}
+        </div>
+      );
+    },
+    filterFn: arrayIncludesFilter,
   },
   {
     accessorKey: "gender_preference",
     header: "Gender",
-    cell: ({ row }) => row.getValue("gender_preference"),
+    cell: ({ row }) => {
+      const value = row.getValue<GenderType>("gender_preference");
+      return GENDER_TYPE_LABLE_MAP[value] ?? "-";
+    },
   },
   {
     accessorKey: "sets",
@@ -107,7 +124,12 @@ export const ExercisesColumn: ColumnDef<Exercise>[] = [
     accessorKey: "coach_type",
     header: "Coach Type",
     cell: ({ row }) => {
-      return <Badge variant={"secondary"}>{row.getValue("coach_type")}</Badge>;
+      const value = row.getValue<CoachType>("coach_type");
+      return (
+        <Badge variant={"secondary"}>
+          {COACH_TYPE_LABEL_MAP[value] ?? "-"}
+        </Badge>
+      );
     },
   },
   {
