@@ -6,6 +6,7 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import InputWithIcon from "@/shared/components/InputWithIcon";
 import SubscriptionDialog from "./SubscriptionDialog";
 import { useDeleteSubscription } from "./hooks/useDeleteSubscription";
+import BtnResetTableFilters from "@/shared/components/BtnResetTableFilters";
 
 export interface ISubscriptionActions {
   disabled?: boolean;
@@ -34,7 +35,7 @@ export function SubscriptionTableActions({
   }
 
   return (
-    <div className="flex gap-x-2 py-4 justify-between">
+    <div className="flex gap-x-2 py-4 justify-between items-center">
       <div className="flex items-center gap-x-4">
         <InputWithIcon
           icon={<X size={16} onClick={handleClearInput} />}
@@ -67,12 +68,15 @@ export function SubscriptionTableActions({
           </>
         ) : null}
       </div>
-      <SubscriptionDialog>
-        <Button size="sm" disabled={disabled}>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add Subscription
-        </Button>
-      </SubscriptionDialog>
+      <div>
+        <BtnResetTableFilters table={table} />
+        <SubscriptionDialog>
+          <Button size="sm" disabled={disabled}>
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add Subscription
+          </Button>
+        </SubscriptionDialog>
+      </div>
     </div>
   );
 }

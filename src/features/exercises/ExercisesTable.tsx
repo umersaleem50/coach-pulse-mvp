@@ -198,9 +198,6 @@ export interface IVideoDialog {
 // In the ExercisesTable component, add a new state for gender filter
 export function ExercisesTable() {
   const { exercises, isLoadingExercises } = useExercises();
-  const [muscleGroupFilter, setMuscleGroupFilter] = useState<string>("all");
-  const [coachTypeFilter, setCoachTypeFilter] = useState<string>("all");
-  const [genderFilter, setGenderFilter] = useState<string>("all");
   const [videoDialog, setVideoDialog] = useState<IVideoDialog>({
     open: false,
     url: "",
@@ -210,24 +207,20 @@ export function ExercisesTable() {
 
   // Update the filter UI to include gender filter
   return (
-    <div className="rounded-md border p-2">
-      <DataTableProvider
-        data={exercises as Exercise[]}
-        columns={ExercisesColumn}
-        videoDialog={videoDialog}
-        setVideoDialog={setVideoDialog}
-        muscleGroupFilter={muscleGroupFilter}
-        setMuscleGroupFilter={setMuscleGroupFilter}
-        coachTypeFilter={coachTypeFilter}
-        setCoachTypeFilter={setCoachTypeFilter}
-        genderFilter={genderFilter}
-        setGenderFilter={setGenderFilter}
-      >
-        <ExercisesTableActions />
-        <DataTable />
-        <DataTable.Pagination />
-        <PlayExerciseDialog />
-      </DataTableProvider>
-    </div>
+    <>
+      <div className="rounded-md border p-2">
+        <DataTableProvider
+          data={exercises as Exercise[]}
+          columns={ExercisesColumn}
+          videoDialog={videoDialog}
+          setVideoDialog={setVideoDialog}
+        >
+          <ExercisesTableActions />
+          <DataTable />
+          <DataTable.Pagination />
+          <PlayExerciseDialog />
+        </DataTableProvider>
+      </div>
+    </>
   );
 }
