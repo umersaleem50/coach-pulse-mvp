@@ -7,8 +7,8 @@ function ButtonPlayExercise({ video_url }) {
   return (
     <div className="flex justify-end gap-2">
       <Button
-        variant="outline"
-        size="icon"
+        variant="default"
+        size="default"
         onClick={() =>
           setVideoDialog({
             open: true,
@@ -17,6 +17,7 @@ function ButtonPlayExercise({ video_url }) {
         }
       >
         <Play className="h-4 w-4" />
+        Play
         <span className="sr-only">Play video</span>
       </Button>
     </div>
