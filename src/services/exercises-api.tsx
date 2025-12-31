@@ -9,3 +9,14 @@ export async function getExercises() {
 
   return exercises;
 }
+
+export async function createExercise(payload: any) {
+  const { data, error } = await supabase
+    .from("exercise")
+    .insert(Array.isArray(payload) ? payload : [payload])
+    .select();
+
+  if (error) throw error;
+
+  return data;
+}

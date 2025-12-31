@@ -13,6 +13,8 @@ import {
   MUSCLE_GROUP_LABEL_MAP,
   type MuscleGroup,
 } from "@/constants";
+import { Button } from "@/shared/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
 
 export interface Exercise {
   id: string;
@@ -60,8 +62,22 @@ export const ExercisesColumn: ColumnDef<Exercise>[] = [
   },
   {
     accessorKey: "name",
-    header: () => <div className="flex items-center gap-1">Exercise Name</div>,
-    cell: ({ row }) => row.getValue("name"),
+    header: ({ column }) => (
+      <div className="flex items-center gap-1">
+        Exercise Name{" "}
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-6 w-6"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <ArrowUpDown className="h-3 w-3" />
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => {
+      return row.getValue("name");
+    },
   },
   {
     accessorKey: "muscles_group",
