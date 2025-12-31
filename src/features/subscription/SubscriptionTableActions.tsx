@@ -68,7 +68,7 @@ export function SubscriptionTableActions({
           </>
         ) : null}
       </div>
-      <div>
+      <div className="flex gap-x-2">
         <BtnResetTableFilters table={table} />
         <SubscriptionDialog>
           <Button size="sm" disabled={disabled}>

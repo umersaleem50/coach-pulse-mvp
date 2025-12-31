@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { FilterX } from "lucide-react";
+import { ArrowDownAZ, FilterX } from "lucide-react";
 import type { Table } from "@tanstack/react-table";
 
 function BtnResetTableFilters<T>({ table }: { table: Table<T> }) {
@@ -15,20 +15,28 @@ function BtnResetTableFilters<T>({ table }: { table: Table<T> }) {
   }
 
   return (
-    <>
+    <div className="flex gap-x-2 items-center">
       {hasColumnFilters && (
-        <Button size={"sm"} variant={"warning"} onClick={handleResetFilters}>
+        <Button
+          size={"default"}
+          variant={"warning"}
+          onClick={handleResetFilters}
+        >
           <FilterX />
           Reset Filters
         </Button>
       )}
       {hasSorting && (
-        <Button size={"sm"} variant={"outline"} onClick={handleResetSorting}>
-          <FilterX />
+        <Button
+          size={"default"}
+          variant={"outline"}
+          onClick={handleResetSorting}
+        >
+          <ArrowDownAZ />
           Reset Sorting
         </Button>
       )}
-    </>
+    </div>
   );
 }
 

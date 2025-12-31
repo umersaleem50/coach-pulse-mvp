@@ -1,9 +1,13 @@
-import { Button } from "@/shared/components/ui/button";
+import { Button, type ButtonProps } from "@/shared/components/ui/button";
 import { useDataTable } from "@/shared/hooks/useDataTable";
 import { Play } from "lucide-react";
 
-function ButtonPlayExercise({ video_url }) {
-  const { setVideoDialog } = useDataTable();
+interface PlayExerciseProps extends ButtonProps {
+  video_url: string;
+}
+
+function ButtonPlayExercise({ video_url, ...props }: PlayExerciseProps) {
+  const { setVideoDialog } = useDataTable<any>();
   return (
     <div className="flex justify-end gap-2">
       <Button
@@ -15,6 +19,7 @@ function ButtonPlayExercise({ video_url }) {
             url: video_url,
           })
         }
+        {...props}
       >
         <Play className="h-4 w-4" />
         Play
