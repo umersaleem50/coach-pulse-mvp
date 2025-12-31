@@ -6,6 +6,7 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import { useState } from "react";
 import PlayExerciseDialog from "./PlayExerciseDialog";
 import ExercisesTableActions from "./ExercisesTableActions";
+import { ExercisesLoadingColumn } from "./ExercisesLoadingColumn";
 
 // Update the Exercise interface to include an optional trainer field
 
@@ -203,15 +204,16 @@ export function ExercisesTable() {
     url: "",
   });
 
-  if (isLoadingExercises) return <Spinner />;
+  const columns = isLoadingExercises ? ExercisesLoadingColumn : ExercisesColumn;
+  const data = isLoadingExercises ? Array.from({ length: 3 }) : exercises;
 
   // Update the filter UI to include gender filter
   return (
     <>
       <div className="rounded-md border p-2">
         <DataTableProvider
-          data={exercises as Exercise[]}
-          columns={ExercisesColumn}
+          data={data as Exercise[]}
+          columns={columns}
           videoDialog={videoDialog}
           setVideoDialog={setVideoDialog}
         >
