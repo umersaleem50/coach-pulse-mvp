@@ -10,8 +10,7 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select";
 import { COACH_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/constants";
-import { Button } from "@/shared/components/ui/button";
-import { FilterX, X } from "lucide-react";
+
 import BtnResetTableFilters from "@/shared/components/BtnResetTableFilters";
 
 function ExercisesTableActions() {
