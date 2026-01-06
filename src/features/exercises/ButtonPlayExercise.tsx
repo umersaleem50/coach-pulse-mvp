@@ -7,7 +7,7 @@ interface PlayExerciseProps extends ButtonProps {
 }
 
 function ButtonPlayExercise({ video_url, ...props }: PlayExerciseProps) {
-  const { setVideoDialog } = useDataTable<any>();
+  const { setVideoDialog } = useDataTable();
   return (
     <div className="flex justify-end gap-2">
       <Button
