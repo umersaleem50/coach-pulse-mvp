@@ -1,7 +1,7 @@
 import HoverAvatar from "@/shared/components/HoverAvatar";
 import { Badge } from "@/shared/components/ui/badge";
 import { Checkbox } from "@/shared/components/ui/checkbox";
-import { generateAvatarURL } from "@/shared/lib/helpers";
+
 import type { ColumnDef } from "@tanstack/react-table";
 import ButtonPlayExercise from "./ButtonPlayExercise";
 import { arrayIncludesFilter } from "@/lib/utils";
@@ -15,6 +15,7 @@ import {
 } from "@/constants";
 import { Button } from "@/shared/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+import type { UserProfile } from "@/types/global";
 
 export interface Exercise {
   id: string;
@@ -122,11 +123,11 @@ export const ExercisesColumn: ColumnDef<Exercise>[] = [
     accessorKey: "trainer",
     header: "Trainer",
     cell: ({ row }) => {
-      const trainer = row.getValue("trainer");
+      const trainer = row.getValue("trainer") as UserProfile;
       return trainer ? (
         <HoverAvatar user={trainer}>
           <img
-            src={generateAvatarURL(trainer.avatar_url) || "/placeholder.svg"}
+            src={trainer.avatar_url || "/placeholder.svg"}
             alt={trainer?.full_name}
             className="h-8 w-8 rounded-full object-cover"
           />

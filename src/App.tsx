@@ -1,4 +1,4 @@
-import { Navigate, Route, BrowserRouter as Router, Routes } from "react-router";
+import { Route, BrowserRouter as Router, Routes } from "react-router";
 
 import AuthRoutes from "./routes/auth-routes";
 
@@ -8,8 +8,9 @@ import SettingsLayout from "./features/settings/settings-layout";
 import AllProjects from "./pages/all-projects";
 import AppProviders from "./shared/Providers/AppProviders";
 import Subscriptions from "./pages/Subscriptions";
-import InviteApprovals from "./pages/InviteApprovals";
+
 import Exercises from "./pages/exercises";
+import AuthProvider from "./shared/Providers/AuthProvider";
 
 function App() {
   return (
@@ -19,7 +20,13 @@ function App() {
 
         <Routes>
           {/* <Route path="/role" element={<SelectRolePage />} /> */}
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <AuthProvider>
+                <AppLayout />
+              </AuthProvider>
+            }
+          >
             <Route path="projects" element={<AllProjects />} />
             <Route path="subscriptions" element={<Subscriptions />} />
             <Route path="exercises" element={<Exercises />} />

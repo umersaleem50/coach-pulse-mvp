@@ -71,7 +71,7 @@ export function SubscriptionTableActions({
       <div className="flex gap-x-2">
         <BtnResetTableFilters table={table} />
         <SubscriptionDialog>
-          <Button size="sm" disabled={disabled}>
+          <Button disabled={disabled}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Add Subscription
           </Button>

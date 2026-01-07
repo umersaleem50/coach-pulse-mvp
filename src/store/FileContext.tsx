@@ -1,7 +1,17 @@
-import { useFileUpload } from "@/shared/hooks/use-file-upload";
+import {
+  useFileUpload,
+  type FileUploadActions,
+  type FileWithPreview,
+} from "@/shared/hooks/use-file-upload";
 import { createContext, useContext } from "react";
 
-const FileContext = createContext(null);
+export interface FileProviderProps {
+  fileHandlers: FileUploadActions;
+  files: FileWithPreview[];
+  isDragging: boolean;
+}
+
+const FileContext = createContext<FileProviderProps | null>(null);
 
 export const FileProvider = ({
   children,
@@ -14,12 +24,15 @@ export const FileProvider = ({
     accept: acceptType,
   });
   return (
-    <FileContext.Provider value={{ fileHandlers, files, isDragging } as any}>
+    <FileContext.Provider
+      value={{ fileHandlers, files, isDragging } as FileProviderProps}
+    >
       {children}
     </FileContext.Provider>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useFile() {
   const context = useContext(FileContext);
   if (!context)

@@ -1,12 +1,13 @@
-import { DataTableProvider } from "@/store/DataTableContext";
-import { useExercises } from "./hooks/useExercises";
+import { lazy, Suspense, useState } from "react";
 import DataTable from "@/shared/components/ui/data-table";
+import { DataTableProvider } from "@/store/DataTableContext";
 import { ExercisesColumn, type Exercise } from "./ExercisesColumn";
-import { Spinner } from "@/shared/components/ui/spinner";
-import { useState } from "react";
-import PlayExerciseDialog from "./PlayExerciseDialog";
 import ExercisesTableActions from "./ExercisesTableActions";
 import { ExercisesLoadingColumn } from "./ExercisesLoadingColumn";
+const PlayExerciseDialog = lazy(() => import("./PlayExerciseDialog"));
+
+import { useExercises } from "./hooks/useExercises";
+import { Spinner } from "@/shared/components/ui/spinner";
 
 // Update the Exercise interface to include an optional trainer field
 
@@ -220,7 +221,9 @@ export function ExercisesTable() {
           <ExercisesTableActions />
           <DataTable />
           <DataTable.Pagination />
-          <PlayExerciseDialog />
+          <Suspense fallback={<Spinner />}>
+            <PlayExerciseDialog />
+          </Suspense>
         </DataTableProvider>
       </div>
     </>

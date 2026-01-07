@@ -1,10 +1,9 @@
 import type { ProjectUserRoleTypes, UserProfile } from "@/types/global";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { PlusCircle, PlusIcon, UserPlus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { Tooltip, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { TooltipContent } from "./ui/tooltip";
 import HoverAvatar from "./HoverAvatar";
-import { generateAvatarURL } from "../lib/helpers";
 
 export default function GroupAvatars({
   users,
@@ -22,7 +21,7 @@ export default function GroupAvatars({
           <Avatar key={user.email}>
             <AvatarImage
               className="rounded-full ring-2 ring-background"
-              src={generateAvatarURL(user.avatar_url)}
+              src={user.avatar_url}
               width={36}
               height={36}
               alt={user.full_name}
