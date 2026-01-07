@@ -15,7 +15,7 @@ import { SUPPORTED_CURRENCIES } from "@/constants";
 interface InputProps extends React.ComponentProps<"input"> {
   label?: string;
   selected?: string;
-  onSelect?: any;
+  onSelect?: () => void;
   // currency: SUPPORTED_CURRENCIES_TYPES;
 }
 
@@ -23,7 +23,6 @@ export default function CurrencyInput({
   label,
   selected,
   onSelect,
-
   ...props
 }: InputProps) {
   const id = useId();

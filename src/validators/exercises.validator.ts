@@ -1,36 +1,30 @@
-import {
-  COACH_TYPE_LABEL_MAP,
-  GENDER_TYPE_LABLE_MAP,
-  MUSCLE_GROUP_LABEL_MAP,
-} from "@/constants";
-import { z } from "zod";
+import z from "zod";
 
-export const step1Schema = z.object({
-  name: z.string().min(3, "Exercise name must be at least 3 characters"),
+export const exerciseDetailsSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Enter exercise name")
+    .max(300, "Please keep name under 300 characters."),
   type: z.string(),
-  muscles_group: z.enum(MUSCLE_GROUP_LABEL_MAP).array(),
-  gender_preference: z.enum(GENDER_TYPE_LABLE_MAP),
+  muscles_group: z.string().array(),
+  gender_preference: z.string(),
 });
-export const step2Schema = z.object({
-  reps: z
-    .number()
-    .min(1, "Reps must be at least 1")
-    .max(100, "Reps must be less than 100"),
-  sets: z
-    .number()
-    .min(1, "Sets must be at least 1")
-    .max(100, "Sets must be less than 100"),
+
+export const exerciseVolumeSchema = z.object({
+  reps: z.number().min(1, "Exercise should've minimum of 1 rep"),
+  sets: z.number().min(1, "Exercise should've minimum of 1 set"),
   breaks: z.number(),
   break_duration: z.number(),
 });
-export const step3Schema = z.object({
-  coach_type: z.enum(COACH_TYPE_LABEL_MAP),
-  video_url: z.string(),
+
+export const exerciseOtherDetailsSchema = z.object({
   video_platform: z.string(),
+  video_url: z.string(),
+  coach_type: z.string().optional(),
 });
 
-export const CombinedCheckoutSchema = step1Schema
-  .merge(step2Schema)
-  .merge(step3Schema);
+export const CombinedExerciseSchema = exerciseDetailsSchema
+  .merge(exerciseVolumeSchema)
+  .merge(exerciseOtherDetailsSchema);
 
-export type CombinedCheckoutType = z.infer<typeof CombinedCheckoutSchema>;
+export type CombinedExerciseType = z.infer<typeof CombinedExerciseSchema>;
