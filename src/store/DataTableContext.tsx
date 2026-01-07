@@ -16,15 +16,14 @@ export interface DataTableContextType<TData> {
   table: Table<TData>;
 }
 
-export const DataTableContext = createContext<DataTableContextType<any> | null>(
-  null
-);
+export const DataTableContext =
+  createContext<DataTableContextType<unknown> | null>(null);
 
 export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   children: React.ReactNode;
-  restProps?: any;
+  restProps?: unknown;
 }
 
 export function DataTableProvider<TData, TValue>({

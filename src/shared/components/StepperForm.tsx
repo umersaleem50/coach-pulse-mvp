@@ -1,9 +1,12 @@
 import type { MultiFormContextProps } from "@/store/MultiFormContext";
 import type { ExerciseFormStep } from "@/types/exercise-form";
-import { CombinedExerciseSchema } from "@/validators/exercises.validator";
+import {
+  CombinedExerciseSchema,
+  type CombinedExerciseType,
+} from "@/validators/exercises.validator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createContext, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import z from "zod";
 import { Form } from "./ui/form";
 
@@ -20,7 +23,36 @@ const MultiStepForm = ({ steps }: { steps: ExerciseFormStep[] }) => {
 
   const currentStep = steps[currentStepIndex];
 
-  function handleNext() {
+  async function handleNext() {
+    const isValid = await methods.trigger(currentStep.fields);
+    if (!isValid) {
+      return;
+    }
+
+    const currentStepValues = methods.getValues(currentStep.fields);
+
+    const formValues = Object.fromEntries(
+      currentStep.fields.map((field, index) => [
+        field,
+        currentStepValues[index] || "",
+      ])
+    );
+
+    if (currentStep.validationSchema) {
+      const validateResults =
+        currentStep.validationSchema.safeParse(formValues);
+
+      if (!validateResults.success) {
+        validateResults.error.issues.map((err) => {
+          methods.setError(err.path.join(".") as keyof CombinedExerciseType, {
+            message: err.message,
+            type: "manual",
+          });
+        });
+        return;
+      }
+    }
+
     if (currentStepIndex < steps.length - 1) {
       setCurrentStepIndex((current) => current + 1);
     }
@@ -35,7 +67,7 @@ const MultiStepForm = ({ steps }: { steps: ExerciseFormStep[] }) => {
   function handleGotoStep(position: number) {
     if (position >= 0 && position - 1 < steps.length) {
       setCurrentStepIndex(position - 1);
-      methods.saveFormState(position - 1);
+      // methods.saveFormState(position - 1);
     }
   }
 
@@ -74,3 +106,5 @@ const MultiStepForm = ({ steps }: { steps: ExerciseFormStep[] }) => {
     </MultiStepFormContext.Provider>
   );
 };
+
+export default MultiStepForm;

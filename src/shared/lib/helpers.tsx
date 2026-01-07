@@ -1,6 +1,7 @@
 import { BUCKET_URLS } from "@/constants";
 import type { UserProfile } from "@/types/global";
 import type { Project } from "@/types/project";
+import type { User } from "@supabase/supabase-js";
 
 export function groupProjectUsers(projects: any[]) {
   if (!projects?.length) return [];
@@ -27,6 +28,7 @@ export function groupProjectUsers(projects: any[]) {
 
 export function generateAvatarURL(avatar: string) {
   if (!avatar) return "";
+
   return `${BUCKET_URLS.avatar}${avatar}`;
 }
 
