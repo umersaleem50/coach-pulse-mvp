@@ -31,14 +31,14 @@ import {
 } from "@/shared/components/ui/sidebar";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useSignout } from "@/features/auth/hooks/useSignout";
-import { generateAvatarURL } from "@/shared/lib/helpers";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const { user } = useAuth();
   const { signout, isSigningOut } = useSignout();
 
-  const avatar = generateAvatarURL(user?.user_metadata.avatar_url);
+  const avatar = user?.user_metadata.avatar_url;
+
   const fullname = user?.user_metadata.full_name;
   const email = user?.email;
 

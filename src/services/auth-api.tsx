@@ -1,3 +1,4 @@
+import { generateAvatarURL } from "@/shared/lib/helpers";
 import { supabase } from "@/shared/lib/supabase";
 
 export async function login({ email, password }) {
@@ -79,6 +80,8 @@ export async function updateAccount({
 
   const fileName = `avatar-${data.user.id}-${Math.random()}`;
 
+  const fileURL = generateAvatarURL(fileName);
+
   const { error: storageError } = await supabase.storage
     .from("avatars")
     .upload(fileName, avatar);
@@ -87,7 +90,7 @@ export async function updateAccount({
   const { data: updatedUser, error: userError } =
     await supabase.auth.updateUser({
       data: {
-        avatar_url: `${fileName}`,
+        avatar_url: fileURL,
       },
     });
 

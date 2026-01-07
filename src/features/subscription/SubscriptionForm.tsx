@@ -20,6 +20,7 @@ import type { SUPPORTED_CURRENCIES_TYPES } from "@/constants";
 import { useUpdateSubscription } from "./hooks/useUpdateSubscription";
 import { Switch } from "@/shared/components/ui/switch";
 import { formatCurrency } from "@/shared/lib/utils";
+import { AlertCircle, AlertTriangle } from "lucide-react";
 
 export const subscriptionFormSchema = z.object({
   id: z.string().optional(),
@@ -30,7 +31,7 @@ export const subscriptionFormSchema = z.object({
   price: z.number().min(1, "Please provide price for plan."),
   description: z.string().optional(),
   active_duration: z.number().min(1, "Duration should be of atleast 1 day."),
-  currency: z.enum(["USD", "GBP", "EUR"]).optional(),
+  currency: z.enum(["USD", "GBP", "EUR", "PKR"]).optional(),
   is_recurring: z.boolean().optional(),
 });
 
@@ -98,15 +99,16 @@ function SubscriptionForm({
           control={form.control}
           name="is_recurring"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-              <div className="space-y-0.5">
+            <FormItem className=" flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+              <div className="space-y-0.5 ">
                 <FormLabel>
+                  <AlertTriangle size={16} />
                   Billing type :{" "}
                   <span className="text-primary">
                     {field.value ? "Recurring" : "One-time"}
                   </span>
                 </FormLabel>
-                <FormDescription>
+                <FormDescription className="w-[80%] mt-2">
                   {field.value
                     ? "The payment provider will automatically charge the subscription once it's expired."
                     : "The payment will be paid once. i.e. Registration fee or cancellation fee."}
