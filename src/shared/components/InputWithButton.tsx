@@ -8,7 +8,7 @@ import { Label } from "./ui/label";
 interface InputButtonProps extends React.ComponentProps<"input"> {
   icon: React.ReactNode;
   label?: string;
-  onClick?: () => any;
+  onClick?: () => void;
   tooltipContent: React.ReactNode;
 }
 
