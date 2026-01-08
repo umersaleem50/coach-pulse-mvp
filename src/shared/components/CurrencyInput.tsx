@@ -1,3 +1,4 @@
+import type { SelectProps } from "@radix-ui/react-select";
 import { useId } from "react";
 
 import {
@@ -8,14 +9,14 @@ import {
   SelectValue,
 } from "./ui/select";
 
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import { SUPPORTED_CURRENCIES } from "@/constants";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
-interface InputProps extends React.ComponentProps<"input"> {
+interface InputProps extends SelectProps {
   label?: string;
   selected?: string;
-  onSelect?: () => void;
+  onSelect?: (value: number | string) => void;
   // currency: SUPPORTED_CURRENCIES_TYPES;
 }
 

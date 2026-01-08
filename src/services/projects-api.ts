@@ -1,8 +1,8 @@
-import { supabase } from "@/shared/lib/supabase";
-import { getUser } from "./auth-api";
-import type { ProjectUserRoleTypes } from "@/types/global";
 import { groupProjectUsers } from "@/shared/lib/helpers";
+import { supabase } from "@/shared/lib/supabase";
+import type { ProjectUserRoleTypes } from "@/types/global";
 import { v4 as uuid } from "uuid";
+import { getUser } from "./auth-api";
 
 type Project = {
   name: string;
@@ -32,11 +32,11 @@ export const getAllProjects = async () => {
     logo,
     users:project_users (
       role,
-      user:profiles ( id, full_name, avatar_url,email )
+      user:profiles( id, full_name, avatar_url,email )
     )
   `);
 
-  const groupedProjects = groupProjectUsers(projects as any[]);
+  const groupedProjects = groupProjectUsers(projects);
 
   if (error) throw new Error(error.message);
 
