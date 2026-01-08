@@ -36,6 +36,8 @@ export const getAllProjects = async () => {
     )
   `);
 
+  console.log("projects", projects);
+
   const groupedProjects = groupProjectUsers(projects);
 
   if (error) throw new Error(error.message);
