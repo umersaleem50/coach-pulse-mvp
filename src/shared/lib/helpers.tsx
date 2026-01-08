@@ -1,24 +1,22 @@
 import { BUCKET_URLS } from "@/constants";
-import type { UserProfile } from "@/types/global";
-import type { Project } from "@/types/project";
-import type { User } from "@supabase/supabase-js";
+import type { ProjectProps, UserProfile } from "@/types/global";
 
-export function groupProjectUsers(projects: any[]) {
+export function groupProjectUsers(projects: ProjectProps[]) {
   if (!projects?.length) return [];
 
   return projects.map((project) => {
-    const grouped: Project = {
+    const grouped: ProjectProps = {
       ...project,
       owners: [],
       admins: [],
-      staff: [],
+      staffs: [],
     };
 
     project.users?.forEach(
       ({ role, user }: { role: string; user: UserProfile }) => {
-        if (role === "owner") grouped.owners.push(user);
-        else if (role === "admin") grouped.admins.push(user);
-        else grouped.staff.push(user);
+        if (role === "owner") grouped?.owners?.push(user);
+        else if (role === "admin") grouped?.admins?.push(user);
+        else grouped?.staffs?.push(user);
       }
     );
 
