@@ -65,3 +65,20 @@ export const MUSCLE_GROUP_LABEL_MAP: Record<MuscleGroup, string> =
     MuscleGroup,
     string
   >;
+
+//  EXERCISE TYPES
+export const EXERCISE_TYPES = [
+  { label: "Cardio", value: "cardio" },
+  { label: "Strength", value: "strength" },
+  { label: "Flexibility", value: "flexibility" },
+  { label: "Mobility", value: "mobility" },
+  { label: "HIIT", value: "hiit" },
+  { label: "Endurance", value: "endurance" },
+  { label: "Balance", value: "balance" },
+];
+
+export type ExerciseType = (typeof EXERCISE_TYPES)[number]["value"];
+
+export const EXERCISE_TYPE_LABELS = Object.fromEntries(
+  EXERCISE_TYPES.map((t) => [t.value, t.label])
+) as Record<ExerciseType, string>;
