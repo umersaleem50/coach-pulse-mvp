@@ -9,7 +9,11 @@ import {
 } from "@/shared/components/ui/tooltip";
 import { Pin, PinOff } from "lucide-react";
 
-function PinProjectButton({ projectId }: { projectId: string | number }) {
+function PinProjectButton({
+  projectId,
+}: {
+  projectId: string | number | bigint;
+}) {
   const { isPinning, pinProject } = usePinProject();
   const { isLoading: isUnpinning, unPinProject } = useUnPinProject();
   const { data: pinnedProjects } = usePinnedProjects();
