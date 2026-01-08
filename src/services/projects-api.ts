@@ -30,15 +30,14 @@ export const getAllProjects = async () => {
     location,
     status,
     logo,
+    created_at,
     users:project_users (
       role,
-      user:profiles( id, full_name, avatar_url,email )
+      user:profiles( id, full_name, avatar_url,email)
     )
   `);
 
-  console.log("projects", projects);
-
-  const groupedProjects = groupProjectUsers(projects);
+  const groupedProjects = projects?.length && groupProjectUsers(projects);
 
   if (error) throw new Error(error.message);
 

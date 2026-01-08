@@ -6,6 +6,7 @@ import {
 } from "@/validators/exercises.validator";
 import { Dumbbell, FileVideoCamera, Layers } from "lucide-react";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const exerciseFormSteps: ExerciseFormStep[] = [
   {
     title: "Basic Details",

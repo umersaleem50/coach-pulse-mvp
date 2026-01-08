@@ -1,7 +1,7 @@
 import { BUCKET_URLS } from "@/constants";
 import type { GroupedProjectProps, ProjectUserProps } from "@/types/global";
 
-export function groupProjectUsers(projects: ProjectUserProps[]) {
+export function groupProjectUsers(projects: ProjectUserProps[] | null) {
   if (!projects?.length) return [];
 
   return projects.map((project) => {

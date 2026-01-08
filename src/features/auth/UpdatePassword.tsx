@@ -5,8 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import UpdatePasswordForm from "./UpdatePasswordForm";
 import { Separator } from "@/shared/components/ui/separator";
+import UpdatePasswordForm from "./UpdatePasswordForm";
 
 function UpdatePassword() {
   return (
