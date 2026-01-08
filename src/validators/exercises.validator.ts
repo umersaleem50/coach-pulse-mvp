@@ -1,3 +1,4 @@
+import { EXERCISE_TYPES, type ExerciseType } from "@/constants";
 import z from "zod";
 
 export const exerciseDetailsSchema = z.object({
@@ -5,7 +6,9 @@ export const exerciseDetailsSchema = z.object({
     .string()
     .min(3, "Enter exercise name")
     .max(300, "Please keep name under 300 characters."),
-  type: z.string(),
+  type: z.enum(
+    EXERCISE_TYPES.map((t) => t.value) as [ExerciseType, ...ExerciseType[]]
+  ),
   muscles_group: z.string().array(),
   gender_preference: z.string(),
 });

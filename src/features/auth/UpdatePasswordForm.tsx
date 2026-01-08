@@ -1,8 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircleIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { toast } from "sonner";
+import { z } from "zod";
 
 import Password from "@/shared/components/password-with-check";
 import { Button } from "@/shared/components/ui/button";
@@ -15,8 +14,8 @@ import {
   FormMessage,
 } from "@/shared/components/ui/form";
 
-import { useUpdateProfile } from "../profile/hooks/useUpdateProfile";
 import PasswordCheckInput from "@/shared/components/password-with-check";
+import { useUpdateProfile } from "../profile/hooks/useUpdateProfile";
 
 const passwordFormSchema = z.object({
   password: z

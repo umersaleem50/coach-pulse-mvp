@@ -1,11 +1,8 @@
-import { z } from "zod";
 import { Button } from "@/shared/components/ui/button";
+import { z } from "zod";
 
 import { Input } from "@/shared/components/ui/input";
 
-import { useUpdateProfile } from "./hooks/useUpdateProfile";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
@@ -14,11 +11,14 @@ import {
   FormItem,
   FormLabel,
 } from "@/shared/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useUpdateProfile } from "./hooks/useUpdateProfile";
 
-import { useAuth } from "../auth/hooks/useAuth";
-import { useEffect } from "react";
 import { Alert, AlertDescription } from "@/shared/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { useEffect } from "react";
+import { useAuth } from "../auth/hooks/useAuth";
 
 const profileFormSchema = z.object({
   full_name: z
@@ -28,13 +28,17 @@ const profileFormSchema = z.object({
   email: z.email(),
 });
 
-export function FormUserDetails({ onSuccess = () => {} }: { onSuccess?: any }) {
+export function FormUserDetails({
+  onSuccess = () => {},
+}: {
+  onSuccess?: () => void;
+}) {
   const { user } = useAuth();
   const { updateProfile, isLoading } = useUpdateProfile();
 
   const isProviderEmail = user?.app_metadata.provider !== "email";
 
-  const form = useForm<z.inter<typeof profileFormSchema>>({
+  const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
       full_name: "",
@@ -44,7 +48,7 @@ export function FormUserDetails({ onSuccess = () => {} }: { onSuccess?: any }) {
 
   useEffect(() => {
     form.setValue("full_name", user?.user_metadata?.full_name);
-    form.setValue("email", user?.email);
+    form.setValue("email", user?.email as string);
   }, [form, user]);
 
   const onSubmit = (values: z.infer<typeof profileFormSchema>) => {

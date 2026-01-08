@@ -30,7 +30,6 @@ export interface ProjectUserProps {
   location: [number, number];
   logo: string;
   status: ProjectStatus;
-
   users?: {
     role: string;
     user: UserProfile;

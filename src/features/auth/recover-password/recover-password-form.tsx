@@ -1,12 +1,15 @@
-import { z } from "zod";
+import { cn } from "@/shared/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { cn } from "@/shared/lib/utils";
+import { z } from "zod";
 
-import { Link } from "react-router";
-import { usePassworRecovery } from "./hooks/usePasswordRecovery";
-import AuthFormHeader from "../auth-form-header";
 import { Button } from "@/shared/components/ui/button";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldSeparator,
+} from "@/shared/components/ui/field";
 import {
   Form,
   FormControl,
@@ -14,15 +17,11 @@ import {
   FormItem,
   FormLabel,
 } from "@/shared/components/ui/form";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldSeparator,
-} from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
+import { Link } from "react-router";
+import AuthFormHeader from "../auth-form-header";
+import { usePassworRecovery } from "./hooks/usePasswordRecovery";
 
-// eslint-disable-next-line react-refresh/only-export-components
 const recoverPasswordSchema = z.object({
   email: z.string().email("Please provide your email."),
 });
