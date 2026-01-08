@@ -12,19 +12,25 @@ import {
 import { Separator } from "@/shared/components/ui/separator";
 import { Ellipsis, MapPin } from "lucide-react";
 
-import PinProjectButton from "./PinProjectButton";
-import GroupAvatars from "@/shared/components/GroupAvatars";
-import type { Project } from "@/types/project";
-import { generateLogoURL } from "@/shared/lib/helpers";
-import ProjectCardActions from "./ProjectCardActions";
-import { useReverseGeo } from "@/shared/hooks/useReverseGeo";
 import { cn } from "@/lib/utils";
+import GroupAvatars from "@/shared/components/GroupAvatars";
+import { useReverseGeo } from "@/shared/hooks/useReverseGeo";
+import { generateLogoURL } from "@/shared/lib/helpers";
 
-function ProjectCard({ project }: { project: Project }) {
-  const { name, admins, logo, id, owners, status, location } = project;
+import { Spinner } from "@/shared/components/ui/spinner";
+import type { GroupedProjectProps } from "@/types/global";
+import PinProjectButton from "./PinProjectButton";
+import ProjectCardActions from "./ProjectCardActions";
+
+function ProjectCard({ project }: { project: GroupedProjectProps }) {
+  const { name, admins, logo, id, owners, staffs, status, location } = project;
   const logoURL = generateLogoURL(logo);
 
-  const { address, error, loading } = useReverseGeo({
+  const {
+    address,
+    error: geoError,
+    loading: isLoadingGeo,
+  } = useReverseGeo({
     lat: location[0],
     lng: location[1],
   });
@@ -80,7 +86,7 @@ function ProjectCard({ project }: { project: Project }) {
           </CardRow>
           <CardRow label="Staff:">
             <GroupAvatars
-              users={admins}
+              users={staffs}
               role="staff"
               onInviteMember={() => alert("working")}
             />
@@ -90,9 +96,14 @@ function ProjectCard({ project }: { project: Project }) {
       <Separator />
       <CardFooter>
         <div className="flex flex-col md:flex-row justify-between w-full md:items-center">
-          <div className="flex items-center">
+          <div className="flex items-center gap-x-2">
             <MapPin size={24} />
-            <p className="text-xs w-full ml-2">{address}</p>
+            {geoError ? <p>Location not found!</p> : null}
+            {isLoadingGeo ? (
+              <Spinner />
+            ) : (
+              <p className="text-xs w-full">{address}</p>
+            )}
           </div>
           <div className="flex gap-x-4 justify-end md:items-end w-full">
             <Button variant={"default"}>Desk Mode</Button>

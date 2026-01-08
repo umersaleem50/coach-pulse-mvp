@@ -10,7 +10,6 @@ import {
 } from "@/shared/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import {
-  BotOff,
   Folder,
   Pen,
   ShieldCheckIcon,
@@ -19,26 +18,27 @@ import {
   Users,
   UserStar,
 } from "lucide-react";
+import { Link } from "react-router";
 import useDeleteProject from "../hooks/useDeleteProject";
 import PinProject from "./PinProject";
-import { Link } from "react-router";
 
 import CreateProjectDialog from "./CreateProjectDialog";
 
 import { generateLogoURL } from "@/shared/lib/helpers";
-import type { Project } from "@/types/project";
-import useUpdateProject from "../hooks/useUpdateProject";
+
 import { Button } from "@/shared/components/ui/button";
+import type { GroupedProjectProps } from "@/types/global";
 import { useState } from "react";
+import useUpdateProject from "../hooks/useUpdateProject";
 
 function ProjectCardActions({
   children,
   project,
 }: {
   children: React.ReactNode;
-  project: Project;
+  project: GroupedProjectProps;
 }) {
-  const { name, logo, id, status } = project;
+  const { name, logo, id, status, location } = project;
   const { deleteProject, isDeleting } = useDeleteProject();
   const { updateProject, isUpdatingProject } = useUpdateProject();
   const [isOpen, setOpen] = useState(false);
@@ -99,7 +99,9 @@ function ProjectCardActions({
             <PinProject projectId={id as string}></PinProject>
           </DropdownMenuItem>
 
-          <CreateProjectDialog project={project}>
+          <CreateProjectDialog
+            project={{ name, location, logo, status, id: id as string }}
+          >
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
               <Pen /> Edit Project
             </DropdownMenuItem>

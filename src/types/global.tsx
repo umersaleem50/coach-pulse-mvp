@@ -1,5 +1,7 @@
 export type ProjectUserRoleTypes = "admin" | "owner" | "staff";
 
+type ProjectStatus = "active" | "in-active";
+
 export interface UserProfile {
   email: string;
   id: string;
@@ -8,14 +10,29 @@ export interface UserProfile {
   updated_at?: Date;
 }
 
-export interface ProjectProps {
+export interface GroupedProjectProps {
+  id: bigint | string | number;
+  created_at: string;
+  name: string;
+  location: [number, number];
+  logo: string;
+  status: ProjectStatus;
+  owners: UserProfile[];
+  users: UserProfile[];
+  admins: UserProfile[];
+  staffs: UserProfile[];
+}
+
+export interface ProjectUserProps {
   id: bigint;
   created_at: string;
   name: string;
   location: [number, number];
   logo: string;
-  status: string;
-  owners?: UserProfile[];
-  users?: UserProfile[];
-  admins?: UserProfile[];
+  status: ProjectStatus;
+
+  users?: {
+    role: string;
+    user: UserProfile;
+  }[];
 }
