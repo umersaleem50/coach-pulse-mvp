@@ -1,4 +1,4 @@
-import { useDataTable } from "@/shared/hooks/useDataTable";
+import { COACH_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/constants";
 import { Input } from "@/shared/components/ui/input";
 import {
   Select,
@@ -9,9 +9,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
-import { COACH_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/constants";
+import { useDataTable } from "@/shared/hooks/useDataTable";
 
 import BtnResetTableFilters from "@/shared/components/BtnResetTableFilters";
+import CreateExerciseForm from "./CreateExerciseForm";
 
 function ExercisesTableActions() {
   const { table } = useDataTable();
@@ -110,6 +111,8 @@ function ExercisesTableActions() {
           </SelectGroup>
         </SelectContent>
       </Select>
+
+      <CreateExerciseForm />
     </div>
   );
 }

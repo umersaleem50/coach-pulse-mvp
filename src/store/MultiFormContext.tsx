@@ -9,4 +9,5 @@ export interface MultiFormContextProps {
   previousStep: () => void;
   goToStep: (step: number) => void;
   steps: ExerciseFormStep[];
+  clearFormState: () => void;
 }
