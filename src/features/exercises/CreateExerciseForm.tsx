@@ -1,3 +1,5 @@
+import MultiStepForm from "@/shared/components/MultiStepForm";
+import { Button } from "@/shared/components/ui/button";
 import type { ExerciseFormStep } from "@/types/exercise-form";
 import {
   exerciseDetailsSchema,
@@ -5,12 +7,15 @@ import {
   exerciseVolumeSchema,
 } from "@/validators/exercises.validator";
 import { Dumbbell, FileVideoCamera, Layers } from "lucide-react";
+import BasicExerciseDetails from "./form-steps/BasicExerciseDetails";
+import ExerciseOtherForm from "./form-steps/ExerciseOtherForm";
+import ExerciseVolumeForm from "./form-steps/ExerciseVolumeForm";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const exerciseFormSteps: ExerciseFormStep[] = [
   {
     title: "Basic Details",
-    component: <></>,
+    component: <BasicExerciseDetails />,
     position: 1,
     validationSchema: exerciseDetailsSchema,
     fields: ["name", "muscles_group", "gender_preference", "type"],
@@ -18,7 +23,7 @@ export const exerciseFormSteps: ExerciseFormStep[] = [
   },
   {
     title: "Exercise Volume",
-    component: <></>,
+    component: <ExerciseVolumeForm />,
     position: 1,
     validationSchema: exerciseVolumeSchema,
     fields: ["sets", "reps", "breaks", "break_duration"],
@@ -26,7 +31,7 @@ export const exerciseFormSteps: ExerciseFormStep[] = [
   },
   {
     title: "Workout Demo",
-    component: <></>,
+    component: <ExerciseOtherForm />,
     position: 1,
     validationSchema: exerciseOtherDetailsSchema,
     fields: ["video_platform", "video_url", "coach_type"],
@@ -34,6 +39,10 @@ export const exerciseFormSteps: ExerciseFormStep[] = [
   },
 ];
 
-export default function ExerciseForm() {
-  return null;
+export default function CreateExerciseForm() {
+  return (
+    <MultiStepForm steps={exerciseFormSteps} localStorageKey="exercise-form">
+      <Button>Create Exercise</Button>
+    </MultiStepForm>
+  );
 }
