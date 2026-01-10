@@ -68,9 +68,9 @@ const MultiStepForm = ({
   async function handleNext() {
     const isValid = await methods.trigger(currentStep.fields);
 
+    console.error(isValid, currentStep.fields);
     // if (!isValid) return;
 
-    console.error(isValid, currentStep.fields);
     const currentStepValues = methods.getValues(currentStep.fields);
 
     console.log(currentStepValues);
@@ -145,13 +145,11 @@ const MultiStepForm = ({
       <DialogContent>
         <MultiStepFormContext.Provider value={value}>
           <Form {...methods}>
-            <div className="w-[550px] mx-auto">
-              {/* <ProgressIndicator /> */}
-              <form onSubmit={methods.handleSubmit(handleSubmitSteppedForm)}>
-                <h1>{currentStep.title}</h1>
-                {currentStep.component}
-              </form>
-            </div>
+            {/* <ProgressIndicator /> */}
+            <form onSubmit={methods.handleSubmit(handleSubmitSteppedForm)}>
+              <h1>{currentStep.title}</h1>
+              {currentStep.component}
+            </form>
           </Form>
         </MultiStepFormContext.Provider>
       </DialogContent>
