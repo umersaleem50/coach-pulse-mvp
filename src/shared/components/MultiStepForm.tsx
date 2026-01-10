@@ -9,9 +9,11 @@ import { useLocalStorage } from "@mantine/hooks";
 import { createContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import MultiStepFormHeader from "./MultiStepFormTitle";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Form } from "./ui/form";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const MultiStepFormContext = createContext<MultiFormContextProps | null>(
   null
 );
@@ -68,12 +70,9 @@ const MultiStepForm = ({
   async function handleNext() {
     const isValid = await methods.trigger(currentStep.fields);
 
-    console.error(isValid, currentStep.fields);
-    // if (!isValid) return;
+    if (!isValid) return;
 
     const currentStepValues = methods.getValues(currentStep.fields);
-
-    console.log(currentStepValues);
 
     const formValues = Object.fromEntries(
       currentStep.fields.map((field, index) => [
@@ -140,20 +139,21 @@ const MultiStepForm = ({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
-        <MultiStepFormContext.Provider value={value}>
+    <MultiStepFormContext.Provider value={value}>
+      <Dialog>
+        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogContent>
+          <MultiStepFormHeader />
+
           <Form {...methods}>
             {/* <ProgressIndicator /> */}
             <form onSubmit={methods.handleSubmit(handleSubmitSteppedForm)}>
-              <h1>{currentStep.title}</h1>
               {currentStep.component}
             </form>
           </Form>
-        </MultiStepFormContext.Provider>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+    </MultiStepFormContext.Provider>
   );
 };
 

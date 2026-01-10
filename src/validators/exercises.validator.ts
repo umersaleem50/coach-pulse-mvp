@@ -6,8 +6,11 @@ export const exerciseDetailsSchema = z.object({
     .min(3, "Name should've atleast 3 chars")
     .max(300, "Name should've under 300 chars."),
   type: z.string("Please select a type"),
-  muscles_group: z.string().array(),
-  gender_preference: z.string(),
+  muscles_group: z
+    .object({ value: z.string(), label: z.string() })
+    .array()
+    .min(1, "Select at-least one mucsle"),
+  gender_preference: z.string().min(1, "Select gender preference"),
 });
 
 export const exerciseVolumeSchema = z.object({
