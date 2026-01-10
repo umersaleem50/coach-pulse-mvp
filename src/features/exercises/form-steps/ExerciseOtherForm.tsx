@@ -1,10 +1,9 @@
 import StepperNextButton from "@/shared/components/StepperNextButton";
+import StepperPreviousButton from "@/shared/components/StepperPreviousButton";
 import {
   Field,
-  FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSet,
 } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
@@ -16,11 +15,6 @@ function ExerciseOtherForm() {
 
   return (
     <FieldSet>
-      <FieldLegend>Basic Details</FieldLegend>
-      <FieldDescription>
-        Please provide the basic information about the exercise.
-      </FieldDescription>
-
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="name">Name</FieldLabel>
@@ -31,8 +25,9 @@ function ExerciseOtherForm() {
           />
         </Field>
       </FieldGroup>
-      <Field orientation="horizontal">
+      <Field orientation="horizontal" className="flex justify-between w-full">
         <StepperNextButton onClick={handleOnSubmit} type="submit" />
+        <StepperPreviousButton />
       </Field>
     </FieldSet>
   );

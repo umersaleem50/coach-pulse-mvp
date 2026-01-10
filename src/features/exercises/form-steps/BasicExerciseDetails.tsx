@@ -1,8 +1,8 @@
-import { EXERCISE_TYPES, MUSCLE_GROUPS } from "@/constants";
+import { EXERCISE_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/constants";
 import StepperNextButton from "@/shared/components/StepperNextButton";
+import StepperPreviousButton from "@/shared/components/StepperPreviousButton";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -27,10 +27,6 @@ function BasicExerciseDetails() {
   return (
     <FieldGroup>
       <FieldSet>
-        <FieldDescription>
-          Please provide the basic information about the exercise.
-        </FieldDescription>
-
         <Controller
           name="name"
           control={form.control}
@@ -63,6 +59,7 @@ function BasicExerciseDetails() {
                 }}
                 {...field}
                 defaultOptions={MUSCLE_GROUPS}
+                ariaInvalid={fieldState.invalid}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -76,18 +73,38 @@ function BasicExerciseDetails() {
             <Field>
               <FieldLabel htmlFor="type">Exercise Type</FieldLabel>
               <ExerciseTypeSelect
+                id="type"
                 value={field.value}
                 onValueChange={field.onChange}
                 options={EXERCISE_TYPES}
                 placeholder="Select a type"
+                aria-invalid={fieldState.invalid}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
 
-        <Field orientation="horizontal">
+        <Controller
+          name="gender_preference"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field>
+              <FieldLabel htmlFor="gender_preference">Exercise Type</FieldLabel>
+              <ExerciseTypeSelect
+                id="gender_preference"
+                value={field.value}
+                onValueChange={field.onChange}
+                options={GENDER_TYPES}
+                placeholder="Select gender preference"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Field orientation="horizontal" className="flex justify-between w-full">
           <StepperNextButton onClick={handleOnSubmit} />
+          <StepperPreviousButton />
         </Field>
       </FieldSet>
     </FieldGroup>
