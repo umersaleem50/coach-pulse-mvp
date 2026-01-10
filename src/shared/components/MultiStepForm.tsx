@@ -9,9 +9,11 @@ import { useLocalStorage } from "@mantine/hooks";
 import { createContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import ProgressIndicator from "./MultiFormProgressIndicator";
 import MultiStepFormHeader from "./MultiStepFormTitle";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Form } from "./ui/form";
+import { Separator } from "./ui/separator";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const MultiStepFormContext = createContext<MultiFormContextProps | null>(
@@ -140,11 +142,13 @@ const MultiStepForm = ({
 
   return (
     <MultiStepFormContext.Provider value={value}>
-      <Dialog>
+      <Dialog open={true}>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <MultiStepFormHeader />
-
+          <Separator />
+          <ProgressIndicator />
+          <Separator />
           <Form {...methods}>
             {/* <ProgressIndicator /> */}
             <form onSubmit={methods.handleSubmit(handleSubmitSteppedForm)}>
