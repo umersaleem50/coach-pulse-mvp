@@ -15,6 +15,7 @@ import ExerciseVolumeForm from "./form-steps/ExerciseVolumeForm";
 export const exerciseFormSteps: ExerciseFormStep[] = [
   {
     title: "Basic Details",
+    description: "Please provide basic details about your exercise.",
     component: <BasicExerciseDetails />,
     position: 1,
     validationSchema: exerciseDetailsSchema,
@@ -23,6 +24,7 @@ export const exerciseFormSteps: ExerciseFormStep[] = [
   },
   {
     title: "Exercise Volume",
+    description: "Please provide volume for your exercise",
     component: <ExerciseVolumeForm />,
     position: 1,
     validationSchema: exerciseVolumeSchema,
@@ -31,6 +33,7 @@ export const exerciseFormSteps: ExerciseFormStep[] = [
   },
   {
     title: "Workout Demo",
+    description: "Please demo video to help your clients with workout.",
     component: <ExerciseOtherForm />,
     position: 1,
     validationSchema: exerciseOtherDetailsSchema,

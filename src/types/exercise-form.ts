@@ -6,6 +6,7 @@ type FieldKeys = keyof CombinedExerciseType;
 
 export type ExerciseFormStep = {
   title: string;
+  description: string;
   position: number;
   validationSchema: ZodType<unknown>;
   component: React.ReactNode;

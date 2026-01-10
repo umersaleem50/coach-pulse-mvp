@@ -82,6 +82,7 @@ interface MultipleSelectorProps {
   >;
   /** hide the clear all button. */
   hideClearAllButton?: boolean;
+  ariaInvalid: any;
 }
 
 export interface MultipleSelectorRef {
@@ -193,6 +194,7 @@ const MultipleSelector = ({
   commandProps,
   inputProps,
   hideClearAllButton = false,
+  ariaInvalid,
 }: MultipleSelectorProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
@@ -516,6 +518,7 @@ const MultipleSelector = ({
               },
               inputProps?.className
             )}
+            aria-invalid={ariaInvalid}
           />
           <button
             type="button"
