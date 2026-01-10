@@ -1,44 +1,61 @@
-import { exerciseFormSteps } from "@/features/exercises/CreateExerciseForm";
-import { Check } from "lucide-react";
-import { useMultiStepForm } from "../hooks/use-stepped-form";
+"use client";
 
-// progress-indicator.tsx
-export default function ProgressIndicator() {
-  const { goToStep, currentStepIndex } = useMultiStepForm();
+import { ChevronLeftIcon } from "lucide-react";
+
+import { Button } from "@/shared/components/ui/button";
+import {
+  Stepper,
+  StepperIndicator,
+  StepperItem,
+  StepperTrigger,
+} from "@/shared/components/ui/stepper";
+
+export default function MultiFormProgressIndicator({
+  totalSteps = 3,
+  currentStep,
+  onPrevious,
+  onNext,
+  actions = true,
+}: {
+  totalSteps: number;
+  currentStep: number;
+  onPrevious: any;
+  onNext: any;
+  actions?: boolean;
+}) {
+  const steps = Array(totalSteps)
+    .fill("")
+    .map((_, i) => i + 1);
 
   return (
-    <div className="flex items-center w-full justify-center">
-      <div className="w-full space-y-3">
-        <div className="relative flex justify-between">
-          {/* Progress Line */}
-          <div className="absolute left-0 top-1/2 h-0.5 w-full -translate-y-1/2 bg-primary">
-            <div className="h-full" />
-          </div>
-          {/* Steps */}
-          {exerciseFormSteps.map((step) => {
-            const isCompleted = currentStepIndex > step.position;
-            const isCurrent = currentStepIndex === step.position - 1;
-
-            return (
-              <div key={step.position} className="relative z-10">
-                <button
-                  onClick={() => goToStep(step.position)}
-                  className={`flex size-12 items-center justify-center rounded-full border-2 ${
-                    isCompleted || isCurrent
-                      ? "border-primary bg-background text-primary"
-                      : "border-secondary bg-secondary text-gray-400"
-                  }`}
-                >
-                  {isCompleted ? (
-                    <Check className="h-4 w-4" />
-                  ) : (
-                    <step.icon className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-            );
-          })}
-        </div>
+    <div className="mx-auto w-full max-w-xl space-y-8 text-center relative">
+      <div className="flex items-center gap-2">
+        {actions ? (
+          <Button
+            className="shrink-0"
+            variant="ghost"
+            size="icon"
+            onClick={onPrevious}
+            disabled={currentStep === 1}
+            aria-label="Prev step"
+          >
+            <ChevronLeftIcon size={16} aria-hidden="true" />
+          </Button>
+        ) : null}
+        <Stepper value={currentStep} onValueChange={onNext} className="gap-1">
+          {steps.map((step) => (
+            <StepperItem key={step} step={step} className="flex-1">
+              <StepperTrigger
+                className="w-full flex-col items-start gap-2"
+                asChild
+              >
+                <StepperIndicator asChild className="bg-border h-1 w-full">
+                  <span className="sr-only">{step}</span>
+                </StepperIndicator>
+              </StepperTrigger>
+            </StepperItem>
+          ))}
+        </Stepper>
       </div>
     </div>
   );
