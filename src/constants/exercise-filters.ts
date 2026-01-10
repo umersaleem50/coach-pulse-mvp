@@ -56,7 +56,7 @@ export const MUSCLE_GROUPS = [
   { label: "Hamstrings", value: "hamstrings" },
   { label: "Calves", value: "calves" },
   { label: "Full Body", value: "full_body" },
-] as const;
+];
 
 export type MuscleGroup = (typeof MUSCLE_GROUPS)[number]["value"];
 

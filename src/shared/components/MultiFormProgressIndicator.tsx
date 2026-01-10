@@ -1,8 +1,9 @@
-import { exerciseFormSteps } from "@/features/exercises/ExerciseForm";
+import { exerciseFormSteps } from "@/features/exercises/CreateExerciseForm";
+import { useMultiStepForm } from "../hooks/use-stepped-form";
 
 // progress-indicator.tsx
 export default function ProgressIndicator() {
-  const { currentStep, goToStep, currentStepIndex } = useMultiStepForm();
+  const { goToStep, currentStepIndex } = useMultiStepForm();
 
   return (
     <div className="flex items-center w-full justify-center p-4 mb-10">
