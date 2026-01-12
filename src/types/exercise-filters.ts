@@ -17,7 +17,7 @@ export const COACH_TYPES = [
   { label: "Nutrition Coach", value: "nutrition" },
   { label: "Lifestyle / Wellness Coach", value: "wellness" },
   { label: "Online Coach", value: "online_coach" },
-] as const;
+];
 
 export type CoachType = (typeof COACH_TYPES)[number]["value"];
 
@@ -82,3 +82,15 @@ export type ExerciseType = (typeof EXERCISE_TYPES)[number]["value"];
 export const EXERCISE_TYPE_LABELS = Object.fromEntries(
   EXERCISE_TYPES.map((t) => [t.value, t.label])
 ) as Record<ExerciseType, string>;
+
+export const EXERCISE_DEMO_PLATFORMS = [
+  { label: "Youtube", value: "youtube" },
+  { label: "Viemo", value: "viemo" },
+];
+
+export type ExercisePlatformDemoType =
+  (typeof EXERCISE_DEMO_PLATFORMS)[number]["value"];
+
+export const EXERCISE_DEMO_PLATFORMS_LABELS = Object.fromEntries(
+  EXERCISE_DEMO_PLATFORMS.map((t) => [t.value, t.label])
+) as Record<ExercisePlatformDemoType, string>;

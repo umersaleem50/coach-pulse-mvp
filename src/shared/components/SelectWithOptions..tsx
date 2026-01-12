@@ -7,14 +7,14 @@ import {
 } from "@/shared/components/ui/select";
 import type { SelectProps } from "@radix-ui/react-select";
 
-interface ExerciseSelectProps extends SelectProps {
+interface SelectWithOptionsProps extends SelectProps {
   options: { label: string; value: string }[];
   placeholder?: string;
   id?: string;
   "aria-invalid"?: any;
 }
 
-function ExerciseSelect(props: ExerciseSelectProps) {
+function SelectWithOptions(props: SelectWithOptionsProps) {
   return (
     <Select {...props}>
       <SelectTrigger aria-invalid={props["aria-invalid"]} id={props.id}>
@@ -29,4 +29,4 @@ function ExerciseSelect(props: ExerciseSelectProps) {
   );
 }
 
-export default ExerciseSelect;
+export default SelectWithOptions;

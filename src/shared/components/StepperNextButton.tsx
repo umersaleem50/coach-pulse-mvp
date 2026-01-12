@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import { useMultiStepForm } from "../hooks/use-stepped-form";
 import { Button, type ButtonProps } from "./ui/button";
 
@@ -6,12 +7,12 @@ function StepperNextButton({ onClick, type, ...rest }: ButtonProps) {
   return (
     <Button
       onClick={onClick}
-      disabled={isLastStep}
-      variant={"outline"}
+      variant={"default"}
       type={type ?? "button"}
       {...rest}
     >
       {isLastStep ? "Submit" : "Continue"}
+      {isLastStep ? null : <ArrowRight />}
     </Button>
   );
 }

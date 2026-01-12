@@ -2,20 +2,21 @@ import HoverAvatar from "@/shared/components/HoverAvatar";
 import { Badge } from "@/shared/components/ui/badge";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 
-import type { ColumnDef } from "@tanstack/react-table";
-import ButtonPlayExercise from "./ButtonPlayExercise";
 import { arrayIncludesFilter } from "@/lib/utils";
+import { Button } from "@/shared/components/ui/button";
+import type { UserProfile } from "@/types/global";
+import type { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
+import ButtonPlayExercise from "./ButtonPlayExercise";
+
 import {
   COACH_TYPE_LABEL_MAP,
+  type CoachType,
   GENDER_TYPE_LABLE_MAP,
   type GenderType,
-  type CoachType,
   MUSCLE_GROUP_LABEL_MAP,
   type MuscleGroup,
-} from "@/constants";
-import { Button } from "@/shared/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
-import type { UserProfile } from "@/types/global";
+} from "@/types";
 
 export interface Exercise {
   id: string;

@@ -33,11 +33,14 @@ function ExerciseVolumeForm() {
             <Field>
               <FieldLabel htmlFor="">Sets</FieldLabel>
               <InputWithIcon
+                {...field}
                 icon={<Layers size={16} />}
                 iconPosition="start"
-                {...field}
                 type="number"
                 min={1}
+                onChange={(e) => {
+                  return field.onChange(e);
+                }}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
