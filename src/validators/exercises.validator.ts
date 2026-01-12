@@ -1,5 +1,10 @@
 import z from "zod";
 
+const MuscleGroupSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+});
+
 export const exerciseDetailsSchema = z.object({
   name: z
     .string()
@@ -7,9 +12,9 @@ export const exerciseDetailsSchema = z.object({
     .max(300, "Name should've under 300 chars."),
   type: z.string("Please select a type"),
   muscles_group: z
-    .object({ value: z.string(), label: z.string() })
-    .array()
-    .min(1, "Select at-least one mucsle"),
+    .array(MuscleGroupSchema)
+    .min(1, "Please select at least one muscle group")
+    .transform((options) => options.map((option) => option.value)),
   gender_preference: z.string().min(1, "Select gender preference"),
 });
 

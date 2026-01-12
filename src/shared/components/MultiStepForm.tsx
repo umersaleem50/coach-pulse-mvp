@@ -1,3 +1,4 @@
+import { useCreateExercise } from "@/features/exercises/hooks/useCreateExercise";
 import type { MultiFormContextProps } from "@/store/MultiFormContext";
 import type { ExerciseFormStep } from "@/types/exercise-form";
 import {
@@ -7,12 +8,14 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocalStorage } from "@mantine/hooks";
 import { createContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import z from "zod";
 import MultiFormProgressIndicator from "./MultiFormProgressIndicator";
 import MultiStepFormHeader from "./MultiStepFormTitle";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Form } from "./ui/form";
+
+type FormValues = z.infer<typeof CombinedExerciseSchema>;
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const MultiStepFormContext = createContext<MultiFormContextProps | null>(
@@ -33,13 +36,16 @@ const MultiStepForm = ({
   localStorageKey: string;
   children: React.ReactNode;
 }) => {
+  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+  const { createExercise, isCreatingExercise } = useCreateExercise();
+
   const [savedFormState, setSavedFormState] =
     useLocalStorage<null | StoredFormState>({
       key: localStorageKey,
       defaultValue: null,
     });
 
-  const methods = useForm<z.infer<typeof CombinedExerciseSchema>>({
+  const methods = useForm<FormValues>({
     resolver: zodResolver(CombinedExerciseSchema),
   });
 
@@ -117,15 +123,13 @@ const MultiStepForm = ({
     }
   }
 
-  async function handleSubmitSteppedForm(
-    data: z.infer<typeof CombinedExerciseSchema>
-  ) {
-    try {
-      console.log("data", data);
-    } catch (error) {
-      console.error("Form Submition error", error);
-    }
+  function handleOnCloseDialog() {
+    setIsOpenDialog(false);
   }
+
+  const handleSubmitSteppedForm: SubmitHandler<FormValues> = async (data) => {
+    createExercise(data, { onSuccess: handleOnCloseDialog });
+  };
 
   const value: MultiFormContextProps = {
     currentStep: currentStep,
@@ -137,11 +141,12 @@ const MultiStepForm = ({
     previousStep: handlePrevious,
     clearFormState,
     steps: steps,
+    isLoading: isCreatingExercise,
   };
 
   return (
     <MultiStepFormContext.Provider value={value}>
-      <Dialog>
+      <Dialog open={isOpenDialog} onOpenChange={setIsOpenDialog}>
         <DialogTrigger asChild>{children}</DialogTrigger>
 
         <DialogContent>

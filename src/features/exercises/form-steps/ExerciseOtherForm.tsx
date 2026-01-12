@@ -121,8 +121,8 @@ function ExerciseOtherForm() {
         />
       </FieldGroup>
       <Field orientation="horizontal" className="flex justify-between w-full">
-        <StepperNextButton onClick={handleOnSubmit} type="submit" />
         <StepperPreviousButton />
+        <StepperNextButton onClick={handleOnSubmit} type="submit" />
       </Field>
     </FieldSet>
   );

@@ -1,14 +1,13 @@
 import HoverAvatar from "@/shared/components/HoverAvatar";
 import { Badge } from "@/shared/components/ui/badge";
-import { Checkbox } from "@/shared/components/ui/checkbox";
-
-import { arrayIncludesFilter } from "@/lib/utils";
 import { Button } from "@/shared/components/ui/button";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 import type { UserProfile } from "@/types/global";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import ButtonPlayExercise from "./ButtonPlayExercise";
 
+import { arrayIncludesFilter } from "@/shared/lib/utils";
 import {
   COACH_TYPE_LABEL_MAP,
   type CoachType,
@@ -17,6 +16,7 @@ import {
   MUSCLE_GROUP_LABEL_MAP,
   type MuscleGroup,
 } from "@/types";
+import ExerciseRowActions from "./ExerciseRowActions";
 
 export interface Exercise {
   id: string;
@@ -159,6 +159,13 @@ export const ExercisesColumn: ColumnDef<Exercise>[] = [
           <ButtonPlayExercise video_url={row.getValue("video_url")} />
         </div>
       );
+    },
+  },
+
+  {
+    header: "Actions",
+    cell: ({ row }) => {
+      return <ExerciseRowActions row={row} />;
     },
   },
 ];

@@ -1,8 +1,8 @@
 import { Checkbox } from "@/shared/components/ui/checkbox";
 
+import { arrayIncludesFilter } from "@/lib/utils";
 import type { ColumnDef } from "@tanstack/react-table";
 import ButtonPlayExercise from "./ButtonPlayExercise";
-import { arrayIncludesFilter } from "@/lib/utils";
 
 import { Skeleton } from "@/shared/components/ui/skeleton";
 
@@ -101,5 +101,10 @@ export const ExercisesLoadingColumn: ColumnDef<Exercise>[] = [
         </div>
       );
     },
+  },
+  {
+    accessorKey: "action",
+    header: "Actions",
+    cell: () => <Skeleton className="w-5 h-5" />,
   },
 ];
