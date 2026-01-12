@@ -14,10 +14,16 @@ export const exerciseDetailsSchema = z.object({
 });
 
 export const exerciseVolumeSchema = z.object({
-  reps: z.number().min(1, "Exercise should've minimum of 1 rep"),
-  sets: z.number().min(1, "Exercise should've minimum of 1 set"),
-  breaks: z.number(),
-  break_duration: z.number(),
+  reps: z
+    .string()
+    .min(1, "Exercise should've minimum of 1 rep")
+    .transform((str) => parseInt(str, 10)),
+  sets: z
+    .string()
+    .min(1, "Exercise should've minimum of 1 set")
+    .transform((str) => parseInt(str, 10)),
+  breaks: z.string().transform((str) => parseInt(str, 10)),
+  break_duration: z.string().transform((str) => parseInt(str, 10)),
 });
 
 export const exerciseOtherDetailsSchema = z.object({
