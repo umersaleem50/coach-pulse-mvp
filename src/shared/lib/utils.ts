@@ -2,6 +2,9 @@ import { clsx, type ClassValue } from "clsx";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
+import { getAddress } from "@/services/api-reverse-geo";
+import type { FilterFn } from "@tanstack/react-table";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -38,3 +41,40 @@ export function formatCurrency(amount: number, currency?: string) {
   }).format(amount);
   return formated;
 }
+
+function getPosition(): Promise<GeolocationPosition> {
+  if (!navigator.geolocation) {
+    return Promise.reject(
+      new Error("Geolocation is not supported by this browser.")
+    );
+  }
+
+  return new Promise<GeolocationPosition>((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
+}
+
+export async function fetchAddress() {
+  // 1) We get the user's geolocation position
+  const positionObj = await getPosition();
+  const position = [
+    positionObj?.coords?.latitude,
+    positionObj?.coords?.longitude,
+  ];
+
+  // 2) Then we use a reverse geocoding API to get a description of the user's address, so we can display it the order form, so that the user can correct it if wrong
+  const addressObj = await getAddress(position);
+  const address = `${addressObj?.locality}, ${addressObj?.city}, ${addressObj?.countryName}`;
+
+  // 3) Then we return an object with the data that we are interested in
+  return { position, address };
+}
+
+export const arrayIncludesFilter: FilterFn<any> = (
+  row,
+  columnId,
+  filterValue
+) => {
+  const values = row.getValue<string[]>(columnId);
+  return Array.isArray(values) && values.includes(filterValue);
+};
