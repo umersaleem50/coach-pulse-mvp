@@ -1,5 +1,6 @@
 import { BUCKET_URLS } from "@/constants";
 import type { GroupedProjectProps, ProjectUserProps } from "@/types/global";
+import { toast } from "sonner";
 
 export function groupProjectUsers(projects: ProjectUserProps[] | null) {
   if (!projects?.length) return [];
@@ -32,4 +33,15 @@ export function generateAvatarURL(avatar: string) {
 export function generateLogoURL(logo: string) {
   if (!logo) return "";
   return BUCKET_URLS.projectLogos + logo;
+}
+
+export function handleMutationError(
+  err: Error,
+  errTitle: string = "Error",
+  errDescription: string = "Action failed, please try again later!"
+) {
+  const isDev = import.meta.env.DEV;
+  const name = isDev ? err.name : errTitle;
+  const description = isDev ? err.message : errDescription;
+  toast.error(name, { description });
 }
