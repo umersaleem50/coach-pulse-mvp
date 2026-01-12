@@ -1,4 +1,3 @@
-import { COACH_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/constants";
 import { Input } from "@/shared/components/ui/input";
 import {
   Select,
@@ -10,6 +9,7 @@ import {
   SelectValue,
 } from "@/shared/components/ui/select";
 import { useDataTable } from "@/shared/hooks/useDataTable";
+import { COACH_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/types";
 
 import BtnResetTableFilters from "@/shared/components/BtnResetTableFilters";
 import CreateExerciseForm from "./CreateExerciseForm";

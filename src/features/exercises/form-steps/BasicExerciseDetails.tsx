@@ -1,4 +1,3 @@
-import { EXERCISE_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/constants";
 import StepperNextButton from "@/shared/components/StepperNextButton";
 import StepperPreviousButton from "@/shared/components/StepperPreviousButton";
 import {
@@ -11,10 +10,11 @@ import {
 import { Input } from "@/shared/components/ui/input";
 import MultipleSelector from "@/shared/components/ui/multiselect";
 import { useMultiStepForm } from "@/shared/hooks/use-stepped-form";
+import { EXERCISE_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/types";
 import { CombinedExerciseSchema } from "@/validators/exercises.validator";
 import { Controller, useFormContext } from "react-hook-form";
 import z from "zod";
-import ExerciseTypeSelect from "../form-inputs/ExerciseTypeSelect";
+import FormSelectWithOptions from "../../../shared/components/SelectWithOptions.";
 
 function BasicExerciseDetails() {
   const form = useFormContext<z.infer<typeof CombinedExerciseSchema>>();
@@ -72,7 +72,7 @@ function BasicExerciseDetails() {
           render={({ field, fieldState }) => (
             <Field>
               <FieldLabel htmlFor="type">Exercise Type</FieldLabel>
-              <ExerciseTypeSelect
+              <FormSelectWithOptions
                 id="type"
                 value={field.value}
                 onValueChange={field.onChange}
@@ -91,7 +91,7 @@ function BasicExerciseDetails() {
           render={({ field, fieldState }) => (
             <Field>
               <FieldLabel htmlFor="gender_preference">Exercise Type</FieldLabel>
-              <ExerciseTypeSelect
+              <FormSelectWithOptions
                 id="gender_preference"
                 value={field.value}
                 onValueChange={field.onChange}
