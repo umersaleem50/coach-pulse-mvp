@@ -40,11 +40,19 @@ export async function createExerciseAPI(
   return data;
 }
 
-export async function deleteUserExerciseAPI(exerciseID: string) {
-  const { data, error } = await supabase
-    .from("exercises")
-    .delete()
-    .eq("id", exerciseID);
+export async function deleteUserExerciseAPI({
+  ids,
+}: {
+  ids: string | number | string[] | number[];
+}) {
+  let query;
+  if (Array.isArray(ids)) {
+    query = supabase.from("exercises").delete().in("id", ids);
+  } else {
+    query = supabase.from("exercises").delete().eq("id", ids);
+  }
+
+  const { error, data } = await query;
 
   if (error) throw error;
 

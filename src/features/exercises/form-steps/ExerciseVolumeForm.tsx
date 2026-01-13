@@ -68,7 +68,7 @@ function ExerciseVolumeForm() {
           name="breaks"
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor="">Breaks</FieldLabel>
+              <FieldLabel htmlFor="">{`Breaks (Optionals)`}</FieldLabel>
               <InputWithIcon
                 {...field}
                 icon={<Pause size={18} />}
@@ -86,7 +86,7 @@ function ExerciseVolumeForm() {
           render={({ field, fieldState }) => (
             <Field>
               <FieldLabel htmlFor="break_duration">
-                Break Duration:
+                {`Break Duration: (Optional)`}
                 <b className="text-primary">{field.value} Seconds</b>
               </FieldLabel>
               <InputWithIcon
