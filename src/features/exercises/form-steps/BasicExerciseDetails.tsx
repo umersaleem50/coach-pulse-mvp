@@ -53,11 +53,11 @@ function BasicExerciseDetails() {
             <Field>
               <FieldLabel htmlFor="muscles_group">Exercise Type</FieldLabel>
               <MultipleSelector
+                {...field}
                 placeholder={"Select targeted muscles"}
                 commandProps={{
                   label: "Select muscles group",
                 }}
-                {...field}
                 defaultOptions={MUSCLE_GROUPS}
                 ariaInvalid={fieldState.invalid}
               />
@@ -71,7 +71,7 @@ function BasicExerciseDetails() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor="type">Exercise Type</FieldLabel>
+              <FieldLabel htmlFor="type">{`Exercise Type (Optional)`}</FieldLabel>
               <FormSelectWithOptions
                 id="type"
                 value={field.value}

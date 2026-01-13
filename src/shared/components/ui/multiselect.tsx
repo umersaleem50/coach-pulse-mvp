@@ -28,7 +28,7 @@ interface GroupOption {
 
 interface MultipleSelectorProps {
   id?: string;
-  value?: Option[];
+  value?: Option[] | string[];
   defaultOptions?: Option[];
   /** manually controlled options */
   options?: Option[];
@@ -52,7 +52,7 @@ interface MultipleSelectorProps {
    * i.e.: creatable, groupBy, delay.
    **/
   onSearchSync?: (value: string) => Option[];
-  onChange?: (options: Option[]) => void;
+  onChange?: (options: Option[] | string[]) => void;
   /** Limit the maximum number of selected options. */
   maxSelected?: number;
   /** When the number of selected options exceeds the limit, the onMaxSelected will be called. */
