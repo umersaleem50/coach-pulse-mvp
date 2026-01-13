@@ -1,4 +1,4 @@
-import { Trash, X } from "lucide-react";
+import { Trash } from "lucide-react";
 import { useDataTable } from "../hooks/useDataTable";
 import { Button } from "./ui/button";
 import { Spinner } from "./ui/spinner";
@@ -50,10 +50,6 @@ function TableSelectionDelete<T extends TableRow>({
 
   return (
     <>
-      <Button variant="outline" onClick={handleResetSelection}>
-        Reset
-        <X />
-      </Button>
       <Button
         variant="destructive"
         size="default"
@@ -62,7 +58,7 @@ function TableSelectionDelete<T extends TableRow>({
           onDelete({ ids: selectedRowsID }, { onSuccess: handleResetSelection })
         }
       >
-        {isDeleting ? <Spinner /> : <Trash />} Delete Selected
+        {isDeleting ? <Spinner /> : <Trash />} Delete
       </Button>
     </>
   );
