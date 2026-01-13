@@ -11,6 +11,7 @@ import {
 import { useDataTable } from "@/shared/hooks/useDataTable";
 import { COACH_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/types";
 
+import BtnResetTableFilters from "@/shared/components/BtnResetTableFilters";
 import TableSelectionDelete from "@/shared/components/TableSelectionDelete";
 import CreateExerciseForm from "./CreateExerciseForm";
 import { useDeleteExercise } from "./hooks/useDeleteExercise";
@@ -37,7 +38,7 @@ function ExercisesTableActions() {
         onDelete={deleteUserExercise}
       />
 
-      {/* <BtnResetTableFilters table={table} /> */}
+      <BtnResetTableFilters table={table} />
 
       <Select
         value={
