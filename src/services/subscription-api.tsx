@@ -38,19 +38,19 @@ export async function updateSubscription({
 }
 
 export async function deleteSubscriptionApi({
-  subscriptionId,
+  ids,
 }: {
-  subscriptionId: string | number | string[] | number[];
+  ids: string | number | string[] | number[];
 }) {
   let query;
-  if (Array.isArray(subscriptionId)) {
-    query = supabase.from("subscriptions").delete().in("id", subscriptionId);
+  if (Array.isArray(ids)) {
+    query = supabase.from("subscriptions").delete().in("id", ids);
   } else {
-    query = supabase.from("subscriptions").delete().eq("id", subscriptionId);
+    query = supabase.from("subscriptions").delete().eq("id", ids);
   }
   const { error } = await query;
 
   if (error) throw error;
 
-  return { subscriptionId };
+  return { ids };
 }

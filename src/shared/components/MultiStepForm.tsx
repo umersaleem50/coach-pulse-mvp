@@ -84,7 +84,7 @@ const MultiStepForm = ({
     const formValues = Object.fromEntries(
       currentStep.fields.map((field, index) => [
         field,
-        currentStepValues[index] || "",
+        currentStepValues[index] ?? "",
       ])
     );
 
@@ -128,7 +128,12 @@ const MultiStepForm = ({
   }
 
   const handleSubmitSteppedForm: SubmitHandler<FormValues> = async (data) => {
-    createExercise(data, { onSuccess: handleOnCloseDialog });
+    createExercise(data, {
+      onSuccess: function () {
+        clearFormState();
+        handleOnCloseDialog();
+      },
+    });
   };
 
   const value: MultiFormContextProps = {

@@ -1,12 +1,11 @@
-import { PlusCircle, Trash, X } from "lucide-react";
-import type { Subscription } from "./SubscriptionColumn";
-import { useDataTable } from "@/shared/hooks/useDataTable";
-import { Button } from "@/shared/components/ui/button";
-import { Spinner } from "@/shared/components/ui/spinner";
+import BtnResetTableFilters from "@/shared/components/BtnResetTableFilters";
 import InputWithIcon from "@/shared/components/InputWithIcon";
+import TableSelectionDelete from "@/shared/components/TableSelectionDelete";
+import { Button } from "@/shared/components/ui/button";
+import { useDataTable } from "@/shared/hooks/useDataTable";
+import { PlusCircle, X } from "lucide-react";
 import SubscriptionDialog from "./SubscriptionDialog";
 import { useDeleteSubscription } from "./hooks/useDeleteSubscription";
-import BtnResetTableFilters from "@/shared/components/BtnResetTableFilters";
 
 export interface ISubscriptionActions {
   disabled?: boolean;
@@ -17,18 +16,6 @@ export function SubscriptionTableActions({
 }: ISubscriptionActions) {
   const { table } = useDataTable();
   const { deleteSubscription, isDeleting } = useDeleteSubscription();
-
-  const selectedRows = table
-    .getSelectedRowModel()
-    .rows.map((row) => row.original);
-
-  const selectedRowsID = (selectedRows as Subscription[]).map(
-    (subscription: Subscription) => subscription.id
-  );
-
-  function handleResetSelection() {
-    table.resetRowSelection();
-  }
 
   function handleClearInput() {
     table.resetColumnFilters();
@@ -46,27 +33,10 @@ export function SubscriptionTableActions({
           }
           disabled={disabled}
         />
-        {selectedRows.length ? (
-          <>
-            <Button variant={"outline"} onClick={handleResetSelection}>
-              Reset
-              <X />
-            </Button>
-            <Button
-              variant={"destructive"}
-              size={"default"}
-              disabled={isDeleting}
-              onClick={() =>
-                deleteSubscription(
-                  { subscriptionId: selectedRowsID },
-                  { onSuccess: handleResetSelection }
-                )
-              }
-            >
-              {isDeleting ? <Spinner /> : <Trash />} Delete Selected
-            </Button>
-          </>
-        ) : null}
+        <TableSelectionDelete
+          onDelete={deleteSubscription}
+          isDeleting={isDeleting}
+        />
       </div>
       <div className="flex gap-x-2">
         <BtnResetTableFilters table={table} />
