@@ -1,6 +1,7 @@
+import type { Subscription } from "@/features/subscription/SubscriptionColumn";
 import { supabase } from "@/shared/lib/supabase";
 
-export async function createSubscription(payload) {
+export async function createSubscription(payload: Subscription) {
   const { data, error } = await supabase
     .from("subscriptions")
     .insert([payload])
@@ -24,7 +25,7 @@ export async function updateSubscription({
   payload,
 }: {
   id: string;
-  payload: any;
+  payload: Subscription;
 }) {
   const { data, error } = await supabase
     .from("subscriptions")
