@@ -1,4 +1,3 @@
-import type { SelectProps } from "@radix-ui/react-select";
 import { useId } from "react";
 
 import {
@@ -9,15 +8,18 @@ import {
   SelectValue,
 } from "./ui/select";
 
-import { SUPPORTED_CURRENCIES } from "@/constants";
+import {
+  SUPPORTED_CURRENCIES,
+  type SUPPORTED_CURRENCIES_TYPES,
+} from "@/constants";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
-interface InputProps extends SelectProps {
+interface InputSelectProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onSelect"> {
   label?: string;
-  selected?: string;
-  onSelect?: (value: number | string) => void;
-  // currency: SUPPORTED_CURRENCIES_TYPES;
+  selected?: SUPPORTED_CURRENCIES_TYPES;
+  onSelect?: (value: SUPPORTED_CURRENCIES_TYPES) => void;
 }
 
 export default function CurrencyInput({
@@ -25,7 +27,7 @@ export default function CurrencyInput({
   selected,
   onSelect,
   ...props
-}: InputProps) {
+}: InputSelectProps) {
   const id = useId();
   return (
     <div className="*:not-first:mt-2">
@@ -49,11 +51,11 @@ export default function CurrencyInput({
           </SelectContent>
         </Select>
         <Input
+          {...props}
           id={id}
           className="-ms-px rounded-s-none shadow-none focus-visible:z-10"
           placeholder="0.00"
           type="number"
-          {...props}
         />
       </div>
     </div>
