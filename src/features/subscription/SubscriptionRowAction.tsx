@@ -1,16 +1,16 @@
-import { MoreHorizontalIcon } from "lucide-react";
-import type { Row } from "@tanstack/react-table";
-import type { Subscription } from "./SubscriptionColumn";
-import { useDeleteSubscription } from "./hooks/useDeleteSubscription";
+import { Button } from "@/shared/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu.tsx";
-import { Button } from "@/shared/components/ui/button";
-import SubscriptionDialog from "./SubscriptionDialog";
 import { Spinner } from "@/shared/components/ui/spinner";
+import type { Row } from "@tanstack/react-table";
+import { MoreHorizontalIcon } from "lucide-react";
+import type { Subscription } from "./SubscriptionColumn";
+import SubscriptionDialog from "./SubscriptionDialog";
+import { useDeleteSubscription } from "./hooks/useDeleteSubscription";
 
 const SubcriptionRowActions = ({ row }: { row: Row<Subscription> }) => {
   const { isDeleting, deleteSubscription } = useDeleteSubscription();
@@ -36,7 +36,7 @@ const SubcriptionRowActions = ({ row }: { row: Row<Subscription> }) => {
           variant="destructive"
           onSelect={(e) => {
             e.preventDefault();
-            deleteSubscription({ subscriptionId: id });
+            deleteSubscription(id);
           }}
           disabled={isDeleting}
         >

@@ -103,8 +103,8 @@ function BasicExerciseDetails() {
           )}
         />
         <Field orientation="horizontal" className="flex justify-between w-full">
-          <StepperNextButton onClick={handleOnSubmit} />
           <StepperPreviousButton />
+          <StepperNextButton onClick={handleOnSubmit} />
         </Field>
       </FieldSet>
     </FieldGroup>

@@ -1,4 +1,4 @@
-import { fetchAddress } from "@/lib/utils";
+import { fetchAddress } from "@/shared/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 
 export function useGeoLocation() {

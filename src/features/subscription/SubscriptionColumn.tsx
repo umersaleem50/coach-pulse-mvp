@@ -1,23 +1,23 @@
-import { ArrowUpDown, Clock, RefreshCwOff, RotateCcw } from "lucide-react";
-import type { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/shared/components/ui/checkbox";
-import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
-import { formatCurrency, formatWeeksAndDays } from "@/shared/lib/utils";
-import SubscriptionActions from "./SubscriptionRowAction";
+import { Button } from "@/shared/components/ui/button";
+import { Checkbox } from "@/shared/components/ui/checkbox";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/shared/components/ui/tooltip";
+import { formatCurrency, formatWeeksAndDays } from "@/shared/lib/utils";
+import type { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, Clock, RefreshCwOff, RotateCcw } from "lucide-react";
+import SubscriptionActions from "./SubscriptionRowAction";
 
 export type Subscription = {
-  created_at: string;
+  id?: string | number;
+  created_at?: string;
   name: string;
   price: number;
   active_duration: number;
-  trainer: string;
-  id: string;
+  trainer?: string;
   description?: string;
   currency?: string;
   payment_type?: "recurring" | "one-time";

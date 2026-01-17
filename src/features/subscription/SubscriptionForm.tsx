@@ -1,7 +1,7 @@
-import z from "zod";
-import { useCreateSubscription } from "./hooks/useCreateSubscription";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import type { SUPPORTED_CURRENCIES_TYPES } from "@/constants";
+import CurrencyInput from "@/shared/components/CurrencyInput";
+import InputAddOn from "@/shared/components/InputAddOn";
+import { Button } from "@/shared/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,28 +12,19 @@ import {
   FormMessage,
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
-import { Textarea } from "@/shared/components/ui/textarea";
-import InputAddOn from "@/shared/components/InputAddOn";
-import { Button } from "@/shared/components/ui/button";
-import CurrencyInput from "@/shared/components/CurrencyInput";
-import type { SUPPORTED_CURRENCIES_TYPES } from "@/constants";
-import { useUpdateSubscription } from "./hooks/useUpdateSubscription";
 import { Switch } from "@/shared/components/ui/switch";
+import { Textarea } from "@/shared/components/ui/textarea";
 import { formatCurrency } from "@/shared/lib/utils";
-import { AlertCircle, AlertTriangle } from "lucide-react";
 
-export const subscriptionFormSchema = z.object({
-  id: z.string().optional(),
-  name: z
-    .string()
-    .min(1, "Provide name for plan.")
-    .max(255, "Keep name short."),
-  price: z.number().min(1, "Please provide price for plan."),
-  description: z.string().optional(),
-  active_duration: z.number().min(1, "Duration should be of atleast 1 day."),
-  currency: z.enum(["USD", "GBP", "EUR", "PKR"]).optional(),
-  is_recurring: z.boolean().optional(),
-});
+import {
+  subscriptionFormSchema,
+  type SubscriptionType,
+} from "@/validators/subscription.validator";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AlertTriangle } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useCreateSubscription } from "./hooks/useCreateSubscription";
+import { useUpdateSubscription } from "./hooks/useUpdateSubscription";
 
 const defaultValues = {
   name: "",
@@ -50,17 +41,15 @@ function SubscriptionForm({
   data,
 }: {
   children: React.ReactNode;
-  onSuccess: any;
-  data?: z.infer<typeof subscriptionFormSchema>;
+  onSuccess: () => void;
+  data?: SubscriptionType;
 }) {
   const { isPending: isCreating, createSubscription } = useCreateSubscription();
   const { isUpdatingSubscription, updateSubscription } =
     useUpdateSubscription();
 
-  const form = useForm<z.infer<typeof subscriptionFormSchema>>({
-    defaultValues: (data || defaultValues) as z.infer<
-      typeof subscriptionFormSchema
-    >,
+  const form = useForm<SubscriptionType>({
+    defaultValues: (data || defaultValues) as SubscriptionType,
     resolver: zodResolver(subscriptionFormSchema),
   });
 
@@ -68,7 +57,7 @@ function SubscriptionForm({
   const platformFee = 0;
   const totalCost = form.watch("price") + platformFee;
 
-  function onSubmit(values: z.infer<typeof subscriptionFormSchema>) {
+  function onSubmit(values: SubscriptionType) {
     if (!data) {
       createSubscription(values, {
         onSuccess: () => {
@@ -147,7 +136,6 @@ function SubscriptionForm({
                 <CurrencyInput
                   {...field}
                   selected={form.getValues("currency")}
-                  placeholder={"0.00"}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                   onSelect={(value: SUPPORTED_CURRENCIES_TYPES) =>
                     form.setValue("currency", value)
@@ -178,26 +166,28 @@ function SubscriptionForm({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="active_duration"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Subscription Duration</FormLabel>
-              <FormControl>
-                <InputAddOn
-                  endAddOn="Days"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                />
-              </FormControl>
-              <FormDescription>
-                This defines when the next payment will be taken.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {form.watch("is_recurring") && (
+          <FormField
+            control={form.control}
+            name="active_duration"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Subscription Duration</FormLabel>
+                <FormControl>
+                  <InputAddOn
+                    endAddOn="Days"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormDescription>
+                  This defines when the next payment will be taken.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <div className="justify-end flex gap-x-4 items-center">
           <div className=" self-center mr-auto">

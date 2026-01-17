@@ -12,12 +12,12 @@ import {
 import { Separator } from "@/shared/components/ui/separator";
 import { Ellipsis, MapPin } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import GroupAvatars from "@/shared/components/GroupAvatars";
 import { useReverseGeo } from "@/shared/hooks/useReverseGeo";
 import { generateLogoURL } from "@/shared/lib/helpers";
 
 import { Spinner } from "@/shared/components/ui/spinner";
+import { cn } from "@/shared/lib/utils";
 import type { GroupedProjectProps } from "@/types/global";
 import PinProjectButton from "./PinProjectButton";
 import ProjectCardActions from "./ProjectCardActions";

@@ -70,11 +70,12 @@ export async function fetchAddress() {
   return { position, address };
 }
 
-export const arrayIncludesFilter: FilterFn<any> = (
-  row,
-  columnId,
-  filterValue
-) => {
-  const values = row.getValue<string[]>(columnId);
+export const arrayIncludesFilter = <T>(
+  row: Parameters<FilterFn<T>>[0],
+  columnId: Parameters<FilterFn<T>>[1],
+  filterValue: Parameters<FilterFn<T>>[2]
+): boolean => {
+  const values = row.getValue<unknown>(columnId);
+
   return Array.isArray(values) && values.includes(filterValue);
 };

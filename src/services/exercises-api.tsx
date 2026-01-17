@@ -1,3 +1,4 @@
+import type { Exercise } from "@/features/exercises/ExercisesColumn";
 import { supabase } from "@/shared/lib/supabase";
 import type { CombinedExerciseSchema } from "@/validators/exercises.validator";
 import type z from "zod";
@@ -40,16 +41,12 @@ export async function createExerciseAPI(
   return data;
 }
 
-export async function deleteUserExerciseAPI({
-  ids,
-}: {
-  ids: string | number | string[] | number[];
-}) {
+export async function deleteUserExerciseAPI(id: Exercise["id"]) {
   let query;
-  if (Array.isArray(ids)) {
-    query = supabase.from("exercises").delete().in("id", ids);
+  if (Array.isArray(id)) {
+    query = supabase.from("exercises").delete().in("id", id);
   } else {
-    query = supabase.from("exercises").delete().eq("id", ids);
+    query = supabase.from("exercises").delete().eq("id", id);
   }
 
   const { error, data } = await query;
