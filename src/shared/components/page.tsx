@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
+import { ThemeToggle } from "./ThemeToggle";
 import { Separator } from "./ui/separator";
 import { SidebarTrigger } from "./ui/sidebar";
-import { ThemeToggle } from "./ThemeToggle";
 
 function PageHeader({
   title,

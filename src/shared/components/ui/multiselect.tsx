@@ -5,13 +5,14 @@ import { XIcon } from "lucide-react";
 import * as React from "react";
 import { useEffect } from "react";
 
-import { cn } from "@/lib/utils";
 import {
   Command,
   CommandGroup,
   CommandItem,
   CommandList,
 } from "@/shared/components/ui/command";
+import { useDebounce } from "@/shared/hooks/use-debounce";
+import { cn } from "@/shared/lib/utils";
 
 export interface Option {
   value: string;
@@ -28,7 +29,7 @@ interface GroupOption {
 
 interface MultipleSelectorProps {
   id?: string;
-  value?: Option[] | string[];
+  value?: Option[];
   defaultOptions?: Option[];
   /** manually controlled options */
   options?: Option[];
@@ -52,7 +53,7 @@ interface MultipleSelectorProps {
    * i.e.: creatable, groupBy, delay.
    **/
   onSearchSync?: (value: string) => Option[];
-  onChange?: (options: Option[] | string[]) => void;
+  onChange?: (options: Option[]) => void;
   /** Limit the maximum number of selected options. */
   maxSelected?: number;
   /** When the number of selected options exceeds the limit, the onMaxSelected will be called. */
@@ -82,7 +83,7 @@ interface MultipleSelectorProps {
   >;
   /** hide the clear all button. */
   hideClearAllButton?: boolean;
-  ariaInvalid: any;
+  ariaInvalid: React.AriaAttributes["aria-invalid"];
 }
 
 export interface MultipleSelectorRef {
@@ -90,20 +91,6 @@ export interface MultipleSelectorRef {
   input: HTMLInputElement;
   focus: () => void;
   reset: () => void;
-}
-
-export function useDebounce<T>(value: T, delay?: number): T {
-  const [debouncedValue, setDebouncedValue] = React.useState<T>(value);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setDebouncedValue(value), delay || 500);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
 }
 
 function transToGroupOption(options: Option[], groupBy?: string) {

@@ -7,7 +7,7 @@ export function useDeleteSubscription() {
   const queryClient = useQueryClient();
   const { mutate: deleteSubscription, isPending: isDeleting } = useMutation({
     mutationFn: deleteSubscriptionApi,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["subscriptions"] });
       return toast.success("Subscription Deleted!", {
         description: `Your subscription deleted successfully!`,

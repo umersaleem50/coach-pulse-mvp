@@ -1,5 +1,6 @@
 import type { Subscription } from "@/features/subscription/SubscriptionColumn";
 import { supabase } from "@/shared/lib/supabase";
+import type { SubscriptionType } from "@/validators/subscription.validator";
 
 export async function createSubscription(payload: Subscription) {
   const { data, error } = await supabase
@@ -25,7 +26,7 @@ export async function updateSubscription({
   payload,
 }: {
   id: string;
-  payload: Subscription;
+  payload: SubscriptionType;
 }) {
   const { data, error } = await supabase
     .from("subscriptions")
@@ -38,20 +39,16 @@ export async function updateSubscription({
   return data;
 }
 
-export async function deleteSubscriptionApi({
-  ids,
-}: {
-  ids: string | number | string[] | number[];
-}) {
+export async function deleteSubscriptionApi(id: Subscription["id"]) {
   let query;
-  if (Array.isArray(ids)) {
-    query = supabase.from("subscriptions").delete().in("id", ids);
+  if (Array.isArray(id)) {
+    query = supabase.from("subscriptions").delete().in("id", id);
   } else {
-    query = supabase.from("subscriptions").delete().eq("id", ids);
+    query = supabase.from("subscriptions").delete().eq("id", id);
   }
   const { error } = await query;
 
   if (error) throw error;
 
-  return { ids };
+  return { id };
 }

@@ -1,9 +1,9 @@
+import { cn } from "@/shared/lib/utils";
 import { useId } from "react";
 import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 interface InputButtonProps extends React.ComponentProps<"input"> {
   icon: React.ReactNode;

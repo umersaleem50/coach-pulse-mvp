@@ -1,6 +1,6 @@
 import { Checkbox } from "@/shared/components/ui/checkbox";
 
-import { arrayIncludesFilter } from "@/lib/utils";
+import { arrayIncludesFilter } from "@/shared/lib/utils";
 import type { ColumnDef } from "@tanstack/react-table";
 import ButtonPlayExercise from "./ButtonPlayExercise";
 
