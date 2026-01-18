@@ -10,7 +10,7 @@ import { Button } from "@/shared/components/ui/button";
 import type { Project } from "@/types/project";
 import { Plus } from "lucide-react";
 
-function AllProjectsPage() {
+function Projects() {
   const { projects, isLoadingProjects, projectsError, refetch } = useProjects();
 
   return (
@@ -42,4 +42,4 @@ function AllProjectsPage() {
   );
 }
 
-export default AllProjectsPage;
+export default Projects;
