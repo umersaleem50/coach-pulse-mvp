@@ -8,7 +8,14 @@ import {
   FieldSet,
 } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
-import MultipleSelector from "@/shared/components/ui/multiselect";
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectGroup,
+  MultiSelectItem,
+  MultiSelectTrigger,
+  MultiSelectValue,
+} from "@/shared/components/ui/multiselect";
 import { useMultiStepForm } from "@/shared/hooks/use-stepped-form";
 import { EXERCISE_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/types";
 import { CombinedExerciseSchema } from "@/validators/exercises.validator";
@@ -52,15 +59,18 @@ function BasicExerciseDetails() {
           render={({ field, fieldState }) => (
             <Field>
               <FieldLabel htmlFor="muscles_group">Exercise Type</FieldLabel>
-              <MultipleSelector
-                {...field}
-                placeholder={"Select targeted muscles"}
-                commandProps={{
-                  label: "Select muscles group",
-                }}
-                defaultOptions={MUSCLE_GROUPS}
-                ariaInvalid={fieldState.invalid}
-              />
+              <MultiSelect values={field.value} onValuesChange={field.onChange}>
+                <MultiSelectTrigger className="w-full">
+                  <MultiSelectValue placeholder="Select muscle groups" />
+                </MultiSelectTrigger>
+                <MultiSelectContent>
+                  <MultiSelectGroup>
+                    {MUSCLE_GROUPS.map(({ label, value }) => (
+                      <MultiSelectItem value={value}>{label}</MultiSelectItem>
+                    ))}
+                  </MultiSelectGroup>
+                </MultiSelectContent>
+              </MultiSelect>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
