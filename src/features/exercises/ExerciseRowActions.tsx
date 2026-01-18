@@ -37,7 +37,7 @@ const ExerciseRowActions = ({ row }: { row: Row<Exercise> }) => {
           variant="destructive"
           onSelect={(e) => {
             e.preventDefault();
-            deleteUserExercise(id);
+            deleteUserExercise({ ids: id });
           }}
           disabled={isDeletingExercise}
         >

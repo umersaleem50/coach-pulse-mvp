@@ -1,6 +1,6 @@
 import MultiStepForm from "@/shared/components/MultiStepForm";
 import { Button } from "@/shared/components/ui/button";
-import type { ExerciseFormStep } from "@/types/exercise-form";
+import type { MultiFormStep } from "@/types";
 import {
   exerciseDetailsSchema,
   exerciseOtherDetailsSchema,
@@ -14,7 +14,7 @@ import ExerciseVolumeForm from "./form-steps/ExerciseVolumeForm";
 import { useCreateExercise } from "./hooks/useCreateExercise";
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const exerciseFormSteps: ExerciseFormStep[] = [
+export const exerciseFormSteps: MultiFormStep<CombinedExerciseType>[] = [
   {
     title: "Basic Details",
     description: "Please provide basic details about your exercise.",
@@ -46,14 +46,14 @@ export const exerciseFormSteps: ExerciseFormStep[] = [
 
 export default function CreateExerciseForm() {
   const { createExercise, isCreatingExercise } = useCreateExercise();
-  function handleOnSubmit(data: any) {
+  function handleOnSubmit(data: CombinedExerciseType) {
     createExercise(data);
   }
 
   return (
     <MultiStepForm<CombinedExerciseType>
       onSubmit={handleOnSubmit}
-      steps={exerciseFormSteps as any}
+      steps={exerciseFormSteps}
       localStorageKey="exercise-form"
       isLoading={isCreatingExercise}
     >

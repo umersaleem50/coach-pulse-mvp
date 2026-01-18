@@ -21,7 +21,7 @@ type HandleDeleteOptions = {
 
 type HandleDelete = (
   params: HandleDeleteParams,
-  options?: HandleDeleteOptions
+  options?: HandleDeleteOptions,
 ) => void;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
