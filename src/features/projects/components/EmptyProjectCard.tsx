@@ -25,7 +25,7 @@ function EmptyProjectCard() {
         </EmptyDescription>
 
         <NewProjectDialog>
-          <Button>
+          <Button variant={"outline"}>
             <Plus />
             Create Project
           </Button>

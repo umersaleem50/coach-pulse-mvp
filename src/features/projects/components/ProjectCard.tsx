@@ -2,17 +2,14 @@ import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
-  CardContent,
   CardFooter,
   CardHeader,
-  CardRow,
   CardTitle,
 } from "@/shared/components/ui/card";
 
 import { Separator } from "@/shared/components/ui/separator";
 import { Ellipsis, MapPin } from "lucide-react";
 
-import GroupAvatars from "@/shared/components/GroupAvatars";
 import { useReverseGeo } from "@/shared/hooks/useReverseGeo";
 import { generateLogoURL } from "@/shared/lib/helpers";
 
@@ -46,18 +43,14 @@ function ProjectCard({ project }: { project: GroupedProjectProps }) {
             <div className="flex flex-col gap-y-3">
               <CardTitle>{name}</CardTitle>
 
-              <div>
-                <span className="text-sm">Status:</span>{" "}
-                <Badge variant={"outline"} className="capitalize">
-                  <span
-                    className={cn(
-                      "size-1.5 rounded-full",
-                      status === "active" ? "bg-green-500" : "bg-red-400"
-                    )}
-                    aria-hidden="true"
-                  ></span>
-                  {status}
-                </Badge>
+              <div className="flex items-center gap-x-2">
+                <MapPin size={16} />
+                {geoError ? <p>Location not found!</p> : null}
+                {isLoadingGeo ? (
+                  <Spinner />
+                ) : (
+                  <p className="text-sm w-full">{address}</p>
+                )}
               </div>
             </div>
           </div>
@@ -68,7 +61,7 @@ function ProjectCard({ project }: { project: GroupedProjectProps }) {
           </ProjectCardActions>
         </div>
       </CardHeader>
-      <CardContent className="">
+      {/* <CardContent className="">
         <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
           <CardRow label="Owners:">
             <GroupAvatars
@@ -92,22 +85,26 @@ function ProjectCard({ project }: { project: GroupedProjectProps }) {
             />
           </CardRow>
         </div>
-      </CardContent>
+      </CardContent> */}
       <Separator />
       <CardFooter>
         <div className="flex flex-col md:flex-row justify-between w-full md:items-center">
-          <div className="flex items-center gap-x-2">
-            <MapPin size={24} />
-            {geoError ? <p>Location not found!</p> : null}
-            {isLoadingGeo ? (
-              <Spinner />
-            ) : (
-              <p className="text-xs w-full">{address}</p>
-            )}
+          <div className="flex gap-x-2">
+            <span className="text-sm">Status:</span>{" "}
+            <Badge variant={"outline"} className="capitalize">
+              <span
+                className={cn(
+                  "size-1.5 rounded-full",
+                  status === "active" ? "bg-green-500" : "bg-red-400",
+                )}
+                aria-hidden="true"
+              ></span>
+              {status}
+            </Badge>
           </div>
           <div className="flex gap-x-4 justify-end md:items-end w-full">
             <Button variant={"default"}>Desk Mode</Button>
-            <Button variant={"secondary"}>Open Project</Button>
+            <Button variant={"secondary"}>Show More</Button>
             <PinProjectButton projectId={id} />
           </div>
         </div>

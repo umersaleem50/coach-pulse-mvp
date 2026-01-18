@@ -1,14 +1,14 @@
-import { Plus } from "lucide-react";
-import type { Project } from "@/types/project";
 import EmptyProjectCard from "@/features/projects/components/EmptyProjectCard";
 import LoadingProjects from "@/features/projects/components/LoadingProjects";
+import NewProjectCard from "@/features/projects/components/NewProjectCard";
+import NewProjectDialog from "@/features/projects/components/NewProjectDialog";
 import ProjectCard from "@/features/projects/components/ProjectCard";
 import { useProjects } from "@/features/projects/hooks/useProjects";
 import ErrorCard from "@/shared/components/ErrorCard";
-import NewProjectCard from "@/features/projects/components/NewProjectCard";
-import { Button } from "@/shared/components/ui/button";
 import { Page } from "@/shared/components/page";
-import NewProjectDialog from "@/features/projects/components/NewProjectDialog";
+import { Button } from "@/shared/components/ui/button";
+import type { Project } from "@/types/project";
+import { Plus } from "lucide-react";
 
 function AllProjectsPage() {
   const { projects, isLoadingProjects, projectsError, refetch } = useProjects();
