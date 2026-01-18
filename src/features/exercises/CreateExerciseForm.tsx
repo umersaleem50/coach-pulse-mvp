@@ -5,11 +5,13 @@ import {
   exerciseDetailsSchema,
   exerciseOtherDetailsSchema,
   exerciseVolumeSchema,
+  type CombinedExerciseType,
 } from "@/validators/exercises.validator";
 import { Dumbbell, FileVideoCamera, Layers } from "lucide-react";
 import BasicExerciseDetails from "./form-steps/BasicExerciseDetails";
 import ExerciseOtherForm from "./form-steps/ExerciseOtherForm";
 import ExerciseVolumeForm from "./form-steps/ExerciseVolumeForm";
+import { useCreateExercise } from "./hooks/useCreateExercise";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const exerciseFormSteps: ExerciseFormStep[] = [
@@ -43,8 +45,18 @@ export const exerciseFormSteps: ExerciseFormStep[] = [
 ];
 
 export default function CreateExerciseForm() {
+  const { createExercise, isCreatingExercise } = useCreateExercise();
+  function handleOnSubmit(data: any) {
+    createExercise(data);
+  }
+
   return (
-    <MultiStepForm steps={exerciseFormSteps} localStorageKey="exercise-form">
+    <MultiStepForm<CombinedExerciseType>
+      onSubmit={handleOnSubmit}
+      steps={exerciseFormSteps as any}
+      localStorageKey="exercise-form"
+      isLoading={isCreatingExercise}
+    >
       <Button>Create Exercise</Button>
     </MultiStepForm>
   );

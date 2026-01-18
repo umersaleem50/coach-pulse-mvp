@@ -1,12 +1,11 @@
+import type { MultiFormContextProps } from "@/types";
 import { useContext } from "react";
 import { MultiStepFormContext } from "../components/MultiStepForm";
 
-export const useMultiStepForm = () => {
-  const context = useContext(MultiStepFormContext);
-  if (!context) {
-    throw new Error(
-      "useMultiStepForm must be used within MultiStepForm.Provider"
-    );
+export function useMultiFormContext<T extends Record<string, unknown>>() {
+  const ctx = useContext(MultiStepFormContext);
+  if (!ctx) {
+    throw new Error("useMultiFormContext must be used within MultiStepForm");
   }
-  return context;
-};
+  return ctx as MultiFormContextProps<T>;
+}

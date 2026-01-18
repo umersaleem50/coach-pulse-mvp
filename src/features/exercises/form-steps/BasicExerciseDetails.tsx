@@ -16,7 +16,7 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from "@/shared/components/ui/multiselect";
-import { useMultiStepForm } from "@/shared/hooks/use-stepped-form";
+import { useMultiFormContext } from "@/shared/hooks/use-stepped-form";
 import { EXERCISE_TYPES, GENDER_TYPES, MUSCLE_GROUPS } from "@/types";
 import { CombinedExerciseSchema } from "@/validators/exercises.validator";
 import { Controller, useFormContext } from "react-hook-form";
@@ -26,7 +26,7 @@ import FormSelectWithOptions from "../../../shared/components/SelectWithOptions.
 function BasicExerciseDetails() {
   const form = useFormContext<z.infer<typeof CombinedExerciseSchema>>();
 
-  const { nextStep } = useMultiStepForm();
+  const { nextStep } = useMultiFormContext();
 
   async function handleOnSubmit() {
     nextStep();
