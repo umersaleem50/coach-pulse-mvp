@@ -1,5 +1,5 @@
-import { Origami } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
+import { Origami } from "lucide-react";
 
 import {
   Empty,
@@ -26,7 +26,7 @@ function NewProjectCard() {
           Create a new project for your organization.
         </EmptyDescription>
         <CreateProjectDialog>
-          <Button>Create Project</Button>
+          <Button variant={"outline"}>Create Project</Button>
         </CreateProjectDialog>
       </EmptyContent>
     </Empty>
