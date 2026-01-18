@@ -1,68 +1,62 @@
-import { useCreateExercise } from "@/features/exercises/hooks/useCreateExercise";
-import type { MultiFormContextProps } from "@/store/MultiFormContext";
-import type { ExerciseFormStep } from "@/types/exercise-form";
-import {
-  CombinedExerciseSchema,
-  type CombinedExerciseType,
-} from "@/validators/exercises.validator";
-import { zodResolver } from "@hookform/resolvers/zod";
+import type { MultiFormContextProps, MultiFormStep } from "@/types";
 import { useLocalStorage } from "@mantine/hooks";
-import { createContext, useEffect, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import z from "zod";
+import { createContext, type ReactNode, useEffect, useState } from "react";
+import {
+  type FieldValues,
+  FormProvider,
+  type SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import MultiFormProgressIndicator from "./MultiFormProgressIndicator";
 import MultiStepFormHeader from "./MultiStepFormTitle";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import { Form } from "./ui/form";
 
-type FormValues = z.infer<typeof CombinedExerciseSchema>;
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const MultiStepFormContext = createContext<MultiFormContextProps | null>(
-  null
-);
-
-type StoredFormState = {
+type StoredFormState<T extends FieldValues> = {
   currentStepIndex: number;
-  formValues: Record<string, unknown>;
+  formValues: T;
 };
 
-const MultiStepForm = ({
+type MultiStepFormProps<T extends FieldValues> = {
+  steps: MultiFormStep<T>[];
+  localStorageKey: string;
+  children: ReactNode;
+  onSubmit: SubmitHandler<T>;
+  isLoading?: boolean;
+};
+
+export const MultiStepFormContext =
+  createContext<MultiFormContextProps<any> | null>(null);
+
+function MultiStepForm<T extends FieldValues>({
   steps,
   localStorageKey,
   children,
-}: {
-  steps: ExerciseFormStep[];
-  localStorageKey: string;
-  children: React.ReactNode;
-}) => {
-  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
-  const { createExercise, isCreatingExercise } = useCreateExercise();
+  onSubmit,
+  isLoading,
+}: MultiStepFormProps<T>) {
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
 
   const [savedFormState, setSavedFormState] =
-    useLocalStorage<null | StoredFormState>({
+    useLocalStorage<StoredFormState<T> | null>({
       key: localStorageKey,
       defaultValue: null,
     });
 
-  const methods = useForm<FormValues>({
-    resolver: zodResolver(CombinedExerciseSchema),
-  });
-
+  const methods = useForm<T>({ mode: "all" });
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-
   const currentStep = steps[currentStepIndex];
 
+  // Restore saved form state
   useEffect(() => {
     if (savedFormState) {
       setCurrentStepIndex(savedFormState.currentStepIndex);
       methods.reset(savedFormState.formValues);
     }
-  }, [methods, savedFormState]);
+  }, [savedFormState, methods]);
 
   function saveFormState(stepIndex: number) {
     setSavedFormState({
-      currentStepIndex: stepIndex ?? currentStepIndex,
+      currentStepIndex: stepIndex,
       formValues: methods.getValues(),
     });
   }
@@ -75,6 +69,7 @@ const MultiStepForm = ({
   }
 
   async function handleNext() {
+    // Trigger validation for the current step fields
     const isValid = await methods.trigger(currentStep.fields);
 
     if (!isValid) return;
@@ -85,7 +80,7 @@ const MultiStepForm = ({
       currentStep.fields.map((field, index) => [
         field,
         currentStepValues[index] ?? "",
-      ])
+      ]),
     );
 
     if (currentStep.validationSchema) {
@@ -94,7 +89,7 @@ const MultiStepForm = ({
 
       if (!validateResults.success) {
         validateResults.error.issues.map((err) => {
-          methods.setError(err.path.join(".") as keyof CombinedExerciseType, {
+          methods.setError(err.path.join(".") as any, {
             message: err.message,
             type: "manual",
           });
@@ -112,14 +107,13 @@ const MultiStepForm = ({
   function handlePrevious() {
     if (currentStepIndex > 0) {
       saveFormState(currentStepIndex - 1);
-      setCurrentStepIndex((current) => current - 1);
+      setCurrentStepIndex((c) => c - 1);
     }
   }
 
   function handleGotoStep(position: number) {
-    if (position >= 0 && position - 1 < steps.length) {
-      setCurrentStepIndex(position - 1);
-      // methods.saveFormState(position - 1);
+    if (position >= 0 && position < steps.length) {
+      setCurrentStepIndex(position);
     }
   }
 
@@ -127,17 +121,19 @@ const MultiStepForm = ({
     setIsOpenDialog(false);
   }
 
-  const handleSubmitSteppedForm: SubmitHandler<FormValues> = async (data) => {
-    createExercise(data, {
-      onSuccess: function () {
-        clearFormState();
-        handleOnCloseDialog();
-      },
-    });
+  // Generic submit handler for last step
+  const handleSubmitSteppedForm: SubmitHandler<T> = async (data) => {
+    try {
+      await onSubmit(data);
+      clearFormState();
+      handleOnCloseDialog();
+    } catch (err) {
+      console.error("Submit failed", err);
+    }
   };
 
-  const value: MultiFormContextProps = {
-    currentStep: currentStep,
+  const value: MultiFormContextProps<T> = {
+    currentStep,
     currentStepIndex,
     isFirstStep: currentStepIndex === 0,
     isLastStep: currentStepIndex === steps.length - 1,
@@ -145,15 +141,14 @@ const MultiStepForm = ({
     nextStep: handleNext,
     previousStep: handlePrevious,
     clearFormState,
-    steps: steps,
-    isLoading: isCreatingExercise,
+    steps,
+    isLoading,
   };
 
   return (
     <MultiStepFormContext.Provider value={value}>
       <Dialog open={isOpenDialog} onOpenChange={setIsOpenDialog}>
         <DialogTrigger asChild>{children}</DialogTrigger>
-
         <DialogContent>
           <MultiStepFormHeader />
 
@@ -161,19 +156,19 @@ const MultiStepForm = ({
             currentStep={currentStepIndex + 1}
             onNext={handleNext}
             onPrevious={handlePrevious}
-            totalSteps={3}
+            totalSteps={steps.length} // dynamic
             actions={false}
           />
-          <Form {...methods}>
-            {/* <ProgressIndicator /> */}
+
+          <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(handleSubmitSteppedForm)}>
               {currentStep.component}
             </form>
-          </Form>
+          </FormProvider>
         </DialogContent>
       </Dialog>
     </MultiStepFormContext.Provider>
   );
-};
+}
 
 export default MultiStepForm;

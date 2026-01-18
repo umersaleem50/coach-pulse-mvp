@@ -1,9 +1,9 @@
 import { ArrowRight, CircleCheck } from "lucide-react";
-import { useMultiStepForm } from "../hooks/use-stepped-form";
+import { useMultiFormContext } from "../hooks/use-stepped-form";
 import { Button, type ButtonProps } from "./ui/button";
 
 function StepperNextButton({ onClick, type, ...rest }: ButtonProps) {
-  const { isLastStep, isLoading } = useMultiStepForm();
+  const { isLastStep, isLoading } = useMultiFormContext();
   return (
     <Button
       {...rest}

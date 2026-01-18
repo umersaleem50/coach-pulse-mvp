@@ -8,7 +8,7 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/shared/components/ui/field";
-import { useMultiStepForm } from "@/shared/hooks/use-stepped-form";
+import { useMultiFormContext } from "@/shared/hooks/use-stepped-form";
 import type { CombinedExerciseSchema } from "@/validators/exercises.validator";
 import { Layers, Pause, Repeat2, Timer } from "lucide-react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -17,7 +17,7 @@ import type z from "zod";
 function ExerciseVolumeForm() {
   const form = useFormContext<z.infer<typeof CombinedExerciseSchema>>();
 
-  const { nextStep } = useMultiStepForm();
+  const { nextStep } = useMultiFormContext();
 
   function handleOnSubmit() {
     nextStep();

@@ -26,7 +26,7 @@ function injectUserInPayload(user_id: string | undefined, payload: any) {
 }
 
 export async function createExerciseAPI(
-  payload: z.infer<typeof CombinedExerciseSchema>
+  payload: z.infer<typeof CombinedExerciseSchema>,
 ) {
   const currentUser = await getUser();
   const modifiedPayload = injectUserInPayload(currentUser?.id, payload);
@@ -41,12 +41,12 @@ export async function createExerciseAPI(
   return data;
 }
 
-export async function deleteUserExerciseAPI(id: Exercise["id"]) {
+export async function deleteUserExerciseAPI({ ids }: { ids: Exercise["id"] }) {
   let query;
-  if (Array.isArray(id)) {
-    query = supabase.from("exercises").delete().in("id", id);
+  if (Array.isArray(ids)) {
+    query = supabase.from("exercises").delete().in("id", ids);
   } else {
-    query = supabase.from("exercises").delete().eq("id", id);
+    query = supabase.from("exercises").delete().eq("id", ids);
   }
 
   const { error, data } = await query;
