@@ -24,6 +24,7 @@ type MultiStepFormProps<T extends FieldValues> = {
   isLoading?: boolean;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const MultiStepFormContext =
   createContext<MultiFormContextProps<any> | null>(null);
 
@@ -82,6 +83,7 @@ function MultiStepForm<T extends FieldValues>({
         currentStepValues[index] ?? "",
       ]),
     );
+    console.log(currentStepValues, formValues);
 
     if (currentStep.validationSchema) {
       const validateResults =
@@ -89,6 +91,7 @@ function MultiStepForm<T extends FieldValues>({
 
       if (!validateResults.success) {
         validateResults.error.issues.map((err) => {
+          console.log(err);
           methods.setError(err.path.join(".") as any, {
             message: err.message,
             type: "manual",

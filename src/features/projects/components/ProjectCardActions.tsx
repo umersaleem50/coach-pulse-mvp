@@ -22,14 +22,13 @@ import { Link } from "react-router";
 import useDeleteProject from "../hooks/useDeleteProject";
 import PinProject from "./PinProject";
 
-import CreateProjectDialog from "./CreateProjectDialog";
-
 import { generateLogoURL } from "@/shared/lib/helpers";
 
 import { Button } from "@/shared/components/ui/button";
 import type { GroupedProjectProps } from "@/types/global";
 import { useState } from "react";
 import useUpdateProject from "../hooks/useUpdateProject";
+import { CreateProject } from "./FormCreateProject";
 
 function ProjectCardActions({
   children,
@@ -57,12 +56,12 @@ function ProjectCardActions({
     if (status === "active") {
       updateProject(
         { id: id as string, payload: { status: "disabled" } },
-        { onSettled: handleCloseMenu }
+        { onSettled: handleCloseMenu },
       );
     } else {
       updateProject(
         { id: id as string, payload: { status: "active" } },
-        { onSettled: handleCloseMenu }
+        { onSettled: handleCloseMenu },
       );
     }
   }
@@ -99,13 +98,13 @@ function ProjectCardActions({
             <PinProject projectId={id as string}></PinProject>
           </DropdownMenuItem>
 
-          <CreateProjectDialog
-            project={{ name, location, logo, status, id: id as string }}
+          <CreateProject
+          // project={{ name, location, logo, status, id: id as string }}
           >
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
               <Pen /> Edit Project
             </DropdownMenuItem>
-          </CreateProjectDialog>
+          </CreateProject>
 
           <DropdownMenuItem onSelect={(e) => e.preventDefault()} asChild>
             <Button

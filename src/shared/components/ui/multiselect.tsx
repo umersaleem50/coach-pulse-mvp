@@ -150,9 +150,12 @@ export function MultiSelectValue({
   const valueRef = useRef<HTMLDivElement>(null);
   const overflowRef = useRef<HTMLDivElement>(null);
 
+  console.log(selectedValues.values.length);
+
   const shouldWrap =
     overflowBehavior === "wrap" ||
-    (overflowBehavior === "wrap-when-open" && open);
+    (overflowBehavior === "wrap-when-open" && open) ||
+    selectedValues?.values?.length < 6;
 
   const checkOverflow = useCallback(() => {
     if (valueRef.current == null) return;

@@ -19,12 +19,34 @@ function BasicProjectDetails() {
 
   const { nextStep } = useMultiFormContext();
 
+  function handleSetLocation(location: {
+    position: [number, number];
+    address: string;
+  }) {
+    form.setValue("location", location.position);
+  }
+
   async function handleOnSubmit() {
     nextStep();
   }
   return (
     <FieldGroup>
       <FieldSet>
+        <Controller
+          name="logo"
+          control={form.control}
+          render={({ fieldState }) => (
+            <Field>
+              <UpdateProjectImage
+                onImageSelect={() => {}}
+                avatarUrl={form.getValues("logo")}
+                fallBack="AJ"
+                isLoading={false}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
         <Controller
           name="name"
           control={form.control}
@@ -50,23 +72,8 @@ function BasicProjectDetails() {
           render={({ field, fieldState }) => (
             <Field>
               <FieldLabel htmlFor="muscles_group">Exercise Type</FieldLabel>
-              <LocationInput field={field} onLocation={field.onChange} />
+              <LocationInput field={field} onLocation={handleSetLocation} />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="logo"
-          control={form.control}
-          render={() => (
-            <Field>
-              <UpdateProjectImage
-                onImageSelect={() => {}}
-                avatarUrl={form.getValues("logo")}
-                fallBack="AJ"
-                isLoading={false}
-              />
             </Field>
           )}
         />

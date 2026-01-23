@@ -1,6 +1,7 @@
 import { DAYS_OF_WEEK } from "@/constants";
 import StepperNextButton from "@/shared/components/StepperNextButton";
 import StepperPreviousButton from "@/shared/components/StepperPreviousButton";
+import { TimePickerField } from "@/shared/components/TimePickerField";
 import {
   Field,
   FieldError,
@@ -8,7 +9,6 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/shared/components/ui/field";
-import { Input } from "@/shared/components/ui/input";
 import {
   MultiSelect,
   MultiSelectContent,
@@ -41,7 +41,7 @@ function OpeningHoursForm() {
 
               <MultiSelect values={field.value} onValuesChange={field.onChange}>
                 <MultiSelectTrigger className="w-full">
-                  <MultiSelectValue placeholder="Select muscle groups" />
+                  <MultiSelectValue placeholder="Select opening days" />
                 </MultiSelectTrigger>
                 <MultiSelectContent>
                   <MultiSelectGroup>
@@ -61,14 +61,11 @@ function OpeningHoursForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor="muscles_group">Opening Time</FieldLabel>
-              <Input
-                {...field}
-                type="time"
-                id="time-picker-optional"
-                step="1"
-                defaultValue="10:30:00"
-                className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+              <FieldLabel htmlFor="opening_time">Opening Time</FieldLabel>
+              <TimePickerField
+                id="opening_time"
+                date={field.value}
+                setDate={field.onChange}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -80,14 +77,11 @@ function OpeningHoursForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field>
-              <FieldLabel htmlFor="muscles_group">Closing Time</FieldLabel>
-              <Input
-                {...field}
-                type="time"
-                id="time-picker-optional"
-                step="1"
-                defaultValue="10:30:00"
-                className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+              <FieldLabel htmlFor="close_time">Close Time</FieldLabel>
+              <TimePickerField
+                id="close_time"
+                date={field.value}
+                setDate={field.onChange}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>

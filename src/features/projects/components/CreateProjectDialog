@@ -1,4 +1,3 @@
-import React, { useState, type ReactNode } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,6 +7,7 @@ import {
   DialogTrigger,
 } from "@/shared/components/ui/dialog";
 import { FileProvider } from "@/store/FileContext";
+import { type ReactNode } from "react";
 import { FormProject, projectFormSchema } from "./FormCreateProject";
 
 import type z from "zod";
@@ -19,13 +19,8 @@ function CreateProjectDialog({
   children: ReactNode;
   project?: z.infer<typeof projectFormSchema>;
 }) {
-  const [openDialog, setOpenDialog] = useState(false);
-
-  function handleCloseDialog() {
-    setOpenDialog((open) => !open);
-  }
   return (
-    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+    <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -36,10 +31,7 @@ function CreateProjectDialog({
           </DialogDescription>
         </DialogHeader>
         <FileProvider>
-          <FormProject
-            onSuccess={handleCloseDialog}
-            data={project}
-          ></FormProject>
+          <FormProject data={project}></FormProject>
         </FileProvider>
       </DialogContent>
     </Dialog>

@@ -1,4 +1,3 @@
-import type { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +9,7 @@ import {
 import { FileProvider } from "@/store/FileContext";
 
 import { useState } from "react";
-import { FormProject } from "./FormCreateProject";
+import { CreateProject } from "./FormCreateProject";
 
 function NewProjectDialog({ children }: { children: React.ReactNode }) {
   const [openDialog, setOpenDialog] = useState(false);
@@ -29,7 +28,7 @@ function NewProjectDialog({ children }: { children: React.ReactNode }) {
           </DialogDescription>
         </DialogHeader>
         <FileProvider>
-          <FormProject onSuccess={handleCloseDialog}></FormProject>
+          <CreateProject />
         </FileProvider>
       </DialogContent>
     </Dialog>

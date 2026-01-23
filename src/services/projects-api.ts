@@ -1,14 +1,9 @@
 import { groupProjectUsers } from "@/shared/lib/helpers";
 import { supabase } from "@/shared/lib/supabase";
 import type { ProjectUserRoleTypes } from "@/types/global";
+import type { CombinedProjectType } from "@/validators/project.validator";
 import { v4 as uuid } from "uuid";
 import { getUser } from "./auth-api";
-
-type Project = {
-  name: string;
-  location: [number, number];
-  logo: File | string;
-};
 
 export async function uploadProjectLogo(logoFile: File) {
   if (!logoFile) return null;
@@ -54,7 +49,9 @@ export async function getProject({ id }: { id: string; projectId?: string }) {
   return project;
 }
 
-export async function createProject({ name, location, logo }: Project) {
+export async function createProject(data: CombinedProjectType) {
+  const { name, logo, location, close_time, day_of_week, open_time } = data;
+
   try {
     let logoPath;
 
@@ -69,21 +66,43 @@ export async function createProject({ name, location, logo }: Project) {
     const project = await createProjectAPI({
       name,
       location,
-      logo: logoPath as string,
+      logo: logoPath,
     });
     const ownership = await assignProjectRole({
       role: "owner",
       project_id: project.id,
       user_id: user?.id as string,
     });
-
-    return { project, assign: ownership };
+    const openHours = await setOpeningHours({
+      close_time,
+      day_of_week,
+      open_time,
+      project_id: project.id,
+    });
+    return { project, assign: ownership, openHours };
   } catch (error) {
     if (error) throw error;
   }
 }
 
-export async function createProjectAPI({ name, location, logo }: Project) {
+export async function setOpeningHours(
+  payload: Pick<
+    CombinedProjectType,
+    "project_id" | "day_of_week" | "close_time" | "open_time"
+  >,
+) {
+  const { data, error } = await supabase
+    .from("opening_hours")
+    .insert([payload])
+    .select();
+
+  if (error) throw error;
+
+  return data;
+}
+
+export async function createProjectAPI(payload: CombinedProjectType) {
+  const { name, location, logo } = payload;
   const { data: project, error } = await supabase
     .from("projects")
     .insert([{ name, location, logo }])

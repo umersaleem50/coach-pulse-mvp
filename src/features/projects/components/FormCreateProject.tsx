@@ -1,142 +1,55 @@
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-import LocationInput from "@/shared/components/LocationInput";
+import MultiStepForm from "@/shared/components/MultiStepForm";
 import { Button } from "@/shared/components/ui/button";
-import { generateLogoURL } from "@/shared/lib/helpers";
-import { useFile } from "@/store/FileContext";
+import { FileProvider } from "@/store/FileContext";
+import type { MultiFormStep } from "@/types";
+import {
+  projectDetailsSchema,
+  projectOpeningHours,
+  type CombinedProjectType,
+} from "@/validators/project.validator";
+import { Building, Timer } from "lucide-react";
+import BasicProjectDetails from "../forms/BasicProjectDetails";
+import OpeningHoursForm from "../forms/OpeningHoursForm";
 import { useCreateProject } from "../hooks/useCreateProject";
-import useUpdateProject from "../hooks/useUpdateProject";
-import UpdateProjectImage from "./UpdateProjectImage";
 
-export const projectFormSchema = z.object({
-  name: z
-    .string()
-    .min(3, "Please provide name of minimum 3 letters.")
-    .max(400, "Please shorten the name."),
-  location: z
-    .array(z.number())
-    .max(2)
-    .min(2, "Please provide location of your project."),
-  logo: z.string(),
-  status: z.enum(["active", "in-active"]),
-  id: z.string().or(z.number()).optional(),
-});
+export const projectFormSteps: MultiFormStep<CombinedProjectType>[] = [
+  {
+    title: "Basic Details",
+    description: "Please provide basic details about your exercise.",
+    component: <BasicProjectDetails />,
+    position: 1,
+    validationSchema: projectDetailsSchema,
+    fields: ["name", "logo", "location"],
+    icon: Building,
+  },
+  {
+    title: "Exercise Volume",
+    description: "Please provide volume for your exercise",
+    component: <OpeningHoursForm />,
+    position: 1,
+    validationSchema: projectOpeningHours,
+    fields: ["close_time", "open_time", "day_of_week"],
+    icon: Timer,
+  },
+];
 
-export function FormProject({
-  onSuccess,
-  data,
-}: {
-  onSuccess?: () => void;
-  data?: z.infer<typeof projectFormSchema>;
-}) {
-  const form = useForm<z.infer<typeof projectFormSchema>>({
-    resolver: zodResolver(projectFormSchema),
-    defaultValues: data
-      ? { ...data, logo: generateLogoURL(data?.logo) }
-      : {
-          location: [],
-          logo: "",
-          name: "",
-          status: "active",
-        },
-  });
+export function CreateProject({ children }: { children?: React.ReactNode }) {
+  const { create, isPending } = useCreateProject();
 
-  const { isUpdatingProject, updateProject } = useUpdateProject({
-    id: data?.id as string,
-  });
-
-  const { create: createProject, isPending: isCreatingProject } =
-    useCreateProject();
-
-  const { files } = useFile();
-
-  function handleSubmitForm(values: z.infer<typeof projectFormSchema>) {
-    if (data) {
-      updateProject(
-        {
-          file: files[0]?.file,
-          location: values.location as [number, number],
-          name: values?.name as string,
-          status: values.status,
-        },
-        { onSuccess: onSuccess },
-      );
-    } else {
-      createProject(
-        {
-          file: files[0]?.file,
-          location: values.location as [number, number],
-          name: values.name,
-        },
-        { onSuccess },
-      );
-    }
-  }
-
-  function handleSetLocation(location: {
-    position: [number, number];
-    address: string;
-  }) {
-    form.setValue("location", location.position);
+  function handleOnSubmit(data: CombinedProjectType) {
+    create(data);
   }
 
   return (
-    <Form {...form}>
-      <form
-        className="flex flex-col md:gap-y-4"
-        onSubmit={form.handleSubmit(handleSubmitForm)}
+    <FileProvider>
+      <MultiStepForm<CombinedProjectType>
+        onSubmit={handleOnSubmit}
+        steps={projectFormSteps}
+        localStorageKey="create-project-form"
+        isLoading={isPending}
       >
-        <UpdateProjectImage
-          onImageSelect={() => {}}
-          avatarUrl={form.getValues("logo")}
-          fallBack="AJ"
-          isLoading={false}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Oxygen Gym" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="location"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Location</FormLabel>
-              <FormControl>
-                <LocationInput field={field} onLocation={handleSetLocation} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button
-          isLoading={isCreatingProject || isUpdatingProject}
-          type="submit"
-        >
-          Submit
-        </Button>
-      </form>
-    </Form>
+        {children || <Button>Create Project</Button>}
+      </MultiStepForm>
+    </FileProvider>
   );
 }

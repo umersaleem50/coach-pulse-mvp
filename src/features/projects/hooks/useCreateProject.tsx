@@ -1,4 +1,5 @@
 import { createProject } from "@/services/projects-api";
+import type { CombinedProjectType } from "@/validators/project.validator";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -18,16 +19,9 @@ export function useCreateProject() {
     });
   }
 
-  async function handleCreateProject({
-    file,
-    name,
-    location,
-  }: {
-    file: File;
-    name: string;
-    location: [number, number];
-  }) {
-    const project = await createProject({ name, location, logo: file });
+  async function handleCreateProject(data: CombinedProjectType) {
+    const project = await createProject(data);
+
     return project;
   }
 

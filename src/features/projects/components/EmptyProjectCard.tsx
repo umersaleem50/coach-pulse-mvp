@@ -1,4 +1,3 @@
-import { Button } from "@/shared/components/ui/button";
 import {
   Empty,
   EmptyContent,
@@ -7,8 +6,9 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/shared/components/ui/empty";
-import { Origami, Plus } from "lucide-react";
-import NewProjectDialog from "./NewProjectDialog";
+import { Origami } from "lucide-react";
+
+import { CreateProject } from "./FormCreateProject";
 
 function EmptyProjectCard() {
   return (
@@ -24,12 +24,7 @@ function EmptyProjectCard() {
           Create a new project for your organization.
         </EmptyDescription>
 
-        <NewProjectDialog>
-          <Button variant={"outline"}>
-            <Plus />
-            Create Project
-          </Button>
-        </NewProjectDialog>
+        <CreateProject />
       </EmptyContent>
     </Empty>
   );
