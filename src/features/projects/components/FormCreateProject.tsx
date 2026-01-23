@@ -12,13 +12,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/shared/components/ui/button";
 import LocationInput from "@/shared/components/LocationInput";
-import UpdateProjectImage from "./UpdateProjectImage";
+import { Button } from "@/shared/components/ui/button";
+import { generateLogoURL } from "@/shared/lib/helpers";
 import { useFile } from "@/store/FileContext";
 import { useCreateProject } from "../hooks/useCreateProject";
-import { generateLogoURL } from "@/shared/lib/helpers";
 import useUpdateProject from "../hooks/useUpdateProject";
+import UpdateProjectImage from "./UpdateProjectImage";
 
 export const projectFormSchema = z.object({
   name: z
@@ -71,7 +71,7 @@ export function FormProject({
           name: values?.name as string,
           status: values.status,
         },
-        { onSuccess: onSuccess }
+        { onSuccess: onSuccess },
       );
     } else {
       createProject(
@@ -80,7 +80,7 @@ export function FormProject({
           location: values.location as [number, number],
           name: values.name,
         },
-        { onSuccess }
+        { onSuccess },
       );
     }
   }
